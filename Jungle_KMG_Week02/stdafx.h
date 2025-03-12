@@ -31,6 +31,7 @@ using FWString = std::wstring;
 #include "FMatrix.h"
 #define M_PI           3.14159265358979323846
 
+//#define _COL_MAJOR_SYSTEM
 //#define SCR_WIDTH 1200
 //#define SCR_HEIGHT 800
 

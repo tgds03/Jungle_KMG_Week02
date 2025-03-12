@@ -111,7 +111,11 @@ bool FMatrix::operator!=(const FMatrix& other) const
 //}
 
 FVector4 operator*(const FVector4& lhs, const FMatrix& rhs) {
+#ifdef _COL_MAJOR_SYSTEM
+	return FVector4(lhs * rhs.r1(), lhs * rhs.r2(), lhs * rhs.r3(), lhs * rhs.r4());
+#else
 	return FVector4(lhs*rhs.c1(), lhs*rhs.c2(), lhs*rhs.c3(), lhs*rhs.c4());
+#endif
 };
 
 FVector4 FMatrix::r1() const { return FVector4(m[0][0], m[0][1], m[0][2], m[0][3]); }
@@ -265,9 +269,9 @@ FMatrix FMatrix::RotateZ(float rz) {
 FMatrix FMatrix::RotateXYZ(FVector xyz)
 {
 	FMatrix mat = FMatrix::Identity;
-	mat = mat.RotateX(xyz.x);
-	mat = mat.RotateY(xyz.y);
-	mat = mat.RotateZ(xyz.z);
+	mat = mat * mat.RotateX(xyz.x);
+	mat = mat * mat.RotateY(xyz.y);
+	mat = mat * mat.RotateZ(xyz.z);
 	
 	return mat;
 }
