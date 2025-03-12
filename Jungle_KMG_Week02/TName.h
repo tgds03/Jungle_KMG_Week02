@@ -6,6 +6,7 @@ private:
 
 	FString name;
 public:
+	TName() {};
 	TName(FString name);
 	TName(const TName& other) = default;
 	TName& operator=(const TName& other) = default;

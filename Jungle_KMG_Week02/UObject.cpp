@@ -6,21 +6,8 @@ uint32 UObject::_nextuuid = 0;
 uint32 UObject::_totalCount = 0;
 uint32 UObject::_totalMemory = 0;
 
-UObject::UObject() {}
+UObject::UObject() {
+	_uuid = _nextuuid++;
+}
 
 UObject::~UObject() {}
-
-inline void* UObject::operator new(size_t size) {
-	void* ptr = ::operator new(size);
-	_allocationMap[ptr] = size;
-	++_totalCount;
-	_totalMemory += size;
-	return ptr;
-}
-
-inline void UObject::operator delete(void* p) {
-	--_totalCount;
-	_totalMemory -= _allocationMap[p];
-	_allocationMap.erase(p);
-	free(p);
-}

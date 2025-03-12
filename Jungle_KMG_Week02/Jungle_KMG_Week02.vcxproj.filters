@@ -63,10 +63,31 @@
     <ClInclude Include="CMesh.h">
       <Filter>소스 파일\engine\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="TName.h">
-      <Filter>소스 파일\engine</Filter>
+    <ClInclude Include="UWorld.h">
+      <Filter>소스 파일\engine\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="AActor.h">
+      <Filter>소스 파일\engine\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="UActorComponent.h">
+      <Filter>소스 파일\engine\Framework</Filter>
     </ClInclude>
     <ClInclude Include="UObject.h">
+      <Filter>소스 파일\engine\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="TName.h">
+      <Filter>소스 파일\engine\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="USceneComponent.h">
+      <Filter>소스 파일\engine\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="UCubeComponent.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="UPrimitiveComponent.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="UCameraComponent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -101,10 +122,31 @@
     <ClCompile Include="CRenderer.cpp">
       <Filter>소스 파일\engine\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="AActor.cpp">
+      <Filter>소스 파일\engine\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="UActorComponent.cpp">
+      <Filter>소스 파일\engine\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="UObject.cpp">
+      <Filter>소스 파일\engine\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="UWorld.cpp">
+      <Filter>소스 파일\engine\Framework</Filter>
+    </ClCompile>
     <ClCompile Include="TName.cpp">
       <Filter>소스 파일\engine</Filter>
     </ClCompile>
-    <ClCompile Include="UObject.cpp">
+    <ClCompile Include="UPrimitiveComponent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="UCubeComponent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="USceneComponent.cpp">
+      <Filter>소스 파일\engine\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="UCameraComponent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

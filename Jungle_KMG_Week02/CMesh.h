@@ -1,5 +1,7 @@
 #pragma once
 #include "CBuffer.h"
+#include "CRenderer.h"
+#include "CGraphics.h"
 
 template <typename T>
 class CMesh {
@@ -10,7 +12,7 @@ class CMesh {
 	CIndexBuffer* indexBuffer;
 
 public:
-	CMesh() : vertices(nullptr), indices(nullptr){};
+	CMesh(){};
 	~CMesh();
 
 	CMesh<T>* SetVertices(const std::initializer_list<T>& list);
@@ -21,9 +23,10 @@ public:
 	ID3D11Buffer* GetVerticesBuffer();
 	uint32 GetVerticesCount();
 	uint32 GetVerticesStride();
+	uint32 GetVerticesOffset();
 	ID3D11Buffer* GetIndicesBuffer();
 	uint32 GetIndicesCount();
-
+	inline bool IsEmpty();
 };
 
 template<typename T>
@@ -34,7 +37,7 @@ inline CMesh<T>::~CMesh() {
 template<typename T>
 inline CMesh<T>* CMesh<T>::SetVertices(const std::initializer_list<T>& list) {
 	vertices = TArray<T>(list);
-	vertexBuffer = new CVertexBuffer<T>();
+	vertexBuffer = new CVertexBuffer<T>(CRenderer::GetGraphics()->GetDevice());
 	vertexBuffer->Create(vertices);
 	return this;
 }
@@ -42,6 +45,8 @@ inline CMesh<T>* CMesh<T>::SetVertices(const std::initializer_list<T>& list) {
 template<typename T>
 inline CMesh<T>* CMesh<T>::SetIndices(const std::initializer_list<uint32>& list) {
 	indices = TArray<uint32>(list);
+	indexBuffer = new CIndexBuffer(CRenderer::GetGraphics()->GetDevice());
+	indexBuffer->Create(indices);
 	return this;
 }
 
@@ -69,6 +74,11 @@ inline uint32 CMesh<T>::GetVerticesStride() {
 }
 
 template<typename T>
+inline uint32 CMesh<T>::GetVerticesOffset() {
+	return vertexBuffer->GetOffset();
+}
+
+template<typename T>
 inline ID3D11Buffer* CMesh<T>::GetIndicesBuffer() {
 	return indexBuffer->Get();
 }
@@ -76,4 +86,9 @@ inline ID3D11Buffer* CMesh<T>::GetIndicesBuffer() {
 template<typename T>
 inline uint32 CMesh<T>::GetIndicesCount() {
 	return indexBuffer->GetCount();
+}
+
+template<typename T>
+inline bool CMesh<T>::IsEmpty() {
+	return vertices.empty() || indices.empty();
 }

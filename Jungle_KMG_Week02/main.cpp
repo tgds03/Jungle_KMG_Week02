@@ -1,5 +1,9 @@
 #include "stdafx.h"
 #include "CRenderer.h"
+#include "CGraphics.h"
+#include "UWorld.h"
+#include "UCameraComponent.h"
+#include "UCubeComponent.h"
 
 int SCR_WIDTH = 800;
 int SCR_HEIGHT = 600;
@@ -32,6 +36,25 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	);
 
 	CRenderer::Init(hWnd);
+	CRenderer::AddVertexShader("VertexShader", L"Shader.hlsl", "VS");
+	CRenderer::AddPixelShader("PixelShader", L"Shader.hlsl", "PS");
+	CRenderer::SetVertexShader("VertexShader");
+	CRenderer::SetPixelShader("PixelShader");
+
+	UCubeComponent* comp = new UCubeComponent();
+	comp->SetRelativeLocation(FVector(0, 0, 5));
+
+	UCameraComponent* cam = new UCameraComponent();
+	cam->SetRelativeLocation(FVector(0, 0, 0));
+	CRenderer::SetMainCamera(cam);
+
+	AActor* actor = new AActor();
+	actor->RegisterComponent(comp);
+	actor->RegisterComponent(cam);
+
+	UWorld* world = new UWorld();
+	world->AddActor(actor);
+
 	MSG msg = {};
 	while ( msg.message != WM_QUIT ) {
 		if ( PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) ) {
@@ -39,7 +62,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			DispatchMessage(&msg);
 		}
 		CRenderer::GetGraphics()->RenderBegin();
-
+		world->Update();
+		world->Render();
 		CRenderer::GetGraphics()->RenderEnd();
 	}
 	CRenderer::Release();

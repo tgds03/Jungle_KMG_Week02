@@ -22,10 +22,8 @@ void CShader::LoadShaderFromFile(const FWString& path, const FString& name, cons
 		nullptr
 	);
 	if ( FAILED(hr) ) {
-		// HRESULT 값에서 오류 코드 문자열 생성
 		_com_error err(hr);
 		std::wstring errMsg = err.ErrorMessage();
-		// HRESULT 값도 함께 출력 (16진수 형식으로 보기 쉽게)
 		wchar_t debugMsg[512];
 		swprintf_s(debugMsg, L"Error: 0x%08X - %s\n", hr, errMsg.c_str());
 		OutputDebugString(debugMsg);

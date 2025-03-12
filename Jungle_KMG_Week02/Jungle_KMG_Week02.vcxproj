@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AActor.h" />
     <ClInclude Include="CBuffer.h" />
     <ClInclude Include="CGraphics.h" />
     <ClInclude Include="CInputLayout.h" />
@@ -141,9 +142,16 @@
     <ClInclude Include="ISingleton.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TName.h" />
+    <ClInclude Include="UActorComponent.h" />
+    <ClInclude Include="UCameraComponent.h" />
+    <ClInclude Include="UCubeComponent.h" />
     <ClInclude Include="UObject.h" />
+    <ClInclude Include="UPrimitiveComponent.h" />
+    <ClInclude Include="USceneComponent.h" />
+    <ClInclude Include="UWorld.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AActor.cpp" />
     <ClCompile Include="CBuffer.cpp" />
     <ClCompile Include="CGraphics.cpp" />
     <ClCompile Include="CInputLayout.cpp" />
@@ -155,7 +163,13 @@
     <ClCompile Include="FVector.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TName.cpp" />
+    <ClCompile Include="UActorComponent.cpp" />
+    <ClCompile Include="UCameraComponent.cpp" />
+    <ClCompile Include="UCubeComponent.cpp" />
     <ClCompile Include="UObject.cpp" />
+    <ClCompile Include="UPrimitiveComponent.cpp" />
+    <ClCompile Include="USceneComponent.cpp" />
+    <ClCompile Include="UWorld.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader.hlsl">

@@ -21,3 +21,17 @@ public:
 	uint32 GetUUID() { return _uuid; }
 };
 
+inline void* UObject::operator new(size_t size) {
+	void* ptr = ::operator new(size);
+	_allocationMap[ptr] = size;
+	++_totalCount;
+	_totalMemory += size;
+	return ptr;
+}
+
+inline void UObject::operator delete(void* p) {
+	--_totalCount;
+	_totalMemory -= _allocationMap[p];
+	_allocationMap.erase(p);
+	free(p);
+}

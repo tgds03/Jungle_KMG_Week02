@@ -215,14 +215,14 @@ FMatrix FMatrix::MakeFrom(const FVector& u, const FVector& v, const FVector& w, 
 		v.x, v.y, v.z, p.y,
 		w.x, w.y, w.z, p.z,
 		0.f, 0.f, 0.f, 1.f
-		});
+	});
 #else
 	return FMatrix({
 		u.x, v.x, w.x, 0.f,
 		u.y, v.y, w.y, 0.f,
 		u.z, v.z, w.z, 0.f,
 		p.x, p.y, p.z , 1.f
-		});
+	});
 #endif
 }
 

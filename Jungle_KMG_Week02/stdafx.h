@@ -51,6 +51,9 @@ template <typename T> inline void SafeDelete(T*& ppT) {
 	}
 }
 
+inline float degToRad(float deg) { return deg * M_PI / 180.f; }
+inline float radToDeg(float rad) { return rad * 180.f / M_PI; }
+
 //template <typename T> inline void SafeDelete(T** ppT) {
 //	if ( *ppT ) {
 //		delete *ppt;
