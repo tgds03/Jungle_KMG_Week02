@@ -13,5 +13,102 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\engine">
+      <UniqueIdentifier>{64303447-f115-48bd-b345-7d8ed5ad46c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\engine\Renderer">
+      <UniqueIdentifier>{62d54be3-94ed-470a-a255-ca25ae95eabd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\engine\DirectXWrapper">
+      <UniqueIdentifier>{82f205da-3d03-4e23-a077-bf2965adf209}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\engine\Math">
+      <UniqueIdentifier>{c35d789d-da13-48b7-abac-ff726630a224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\engine\Framework">
+      <UniqueIdentifier>{049974e2-a1c2-42d1-a434-b1e29574ed6d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ISingleton.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CBuffer.h">
+      <Filter>소스 파일\engine\DirectXWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="CGraphics.h">
+      <Filter>소스 파일\engine\DirectXWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="CInputLayout.h">
+      <Filter>소스 파일\engine\DirectXWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="CShader.h">
+      <Filter>소스 파일\engine\DirectXWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="CState.h">
+      <Filter>소스 파일\engine\DirectXWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="FVector.h">
+      <Filter>소스 파일\engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="FMatrix.h">
+      <Filter>소스 파일\engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderer.h">
+      <Filter>소스 파일\engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="CMesh.h">
+      <Filter>소스 파일\engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="TName.h">
+      <Filter>소스 파일\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="UObject.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CBuffer.cpp">
+      <Filter>소스 파일\engine\DirectXWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="CGraphics.cpp">
+      <Filter>소스 파일\engine\DirectXWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="CInputLayout.cpp">
+      <Filter>소스 파일\engine\DirectXWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="CShader.cpp">
+      <Filter>소스 파일\engine\DirectXWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="CState.cpp">
+      <Filter>소스 파일\engine\DirectXWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="FMatrix.cpp">
+      <Filter>소스 파일\engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="FVector.cpp">
+      <Filter>소스 파일\engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="CMesh.cpp">
+      <Filter>소스 파일\engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderer.cpp">
+      <Filter>소스 파일\engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="TName.cpp">
+      <Filter>소스 파일\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="UObject.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader.hlsl" />
   </ItemGroup>
 </Project>

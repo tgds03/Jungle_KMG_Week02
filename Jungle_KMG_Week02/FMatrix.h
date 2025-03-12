@@ -21,8 +21,8 @@ public:
 	FMatrix operator-(const FMatrix& rhs) const;
 	FMatrix operator*(const float& rhs) const;
 	FMatrix operator*(const FMatrix& rhs) const;
-	FVector4 operator[](int row){
-		return FVector4(m[row][0], m[row][1], m[row][2], m[row][3]);
+	float* operator[](int row){
+		return m[row];
 	}
 	FMatrix& operator=(const FMatrix& other);
 	bool operator==(const FMatrix& other) const;
@@ -46,11 +46,11 @@ public:
 	std::wstring to_wstring() const;
 	std::string to_string() const;
 
-	FVector TransformCoord(FVector4 vec) {
+	inline FVector TransformCoord(FVector4 vec) {
 		FVector4 v = (vec * (*this));
 		return FVector(v.x / v.w, v.y / v.w, v.z / v.w);
 	}
-	FVector TransformCoord(const FVector& v) {
+	inline FVector TransformCoord(const FVector& v) {
 		FVector4 v4 = FVector4(v, 1);
 		
 		return TransformCoord(v4);
@@ -67,10 +67,11 @@ public:
 	static FMatrix RotateXYZ(FVector xyz);
 	static FMatrix Translate(float tx, float ty, float tz);
 	static FMatrix Translate(FVector xyz);
-	static FMatrix MakeFromX(FVector xaxis);
-	static FMatrix MakeFromY(FVector yaxis);
-	static FMatrix MakeFromZ(FVector zaxis);
-	FMatrix Swap(UINT r1, UINT r2);
+	static FMatrix MakeFrom(const FVector& u, const FVector& v, const FVector& w, const FVector& p);
+	static FMatrix MakeFromX(const FVector& xaxis);
+	static FMatrix MakeFromY(const FVector& yaxis);
+	static FMatrix MakeFromZ(const FVector& zaxis);
+	FMatrix SwapRow(UINT r1, UINT r2);
 };
 
 inline std::wstring FMatrix::to_wstring() const {

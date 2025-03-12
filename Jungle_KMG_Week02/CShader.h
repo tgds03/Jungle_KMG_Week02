@@ -3,7 +3,7 @@ class CShader {
 public:
 	CShader(ID3D11Device* device) : _device(device), _blob(nullptr) {};
 	virtual ~CShader() {
-		SafeRelease(&_blob);
+		SafeRelease(_blob);
 	};
 	void Release();
 
@@ -25,7 +25,7 @@ class CVertexShader : public CShader {
 public:
 	CVertexShader(ID3D11Device* device) : Super(device), _vertexShader(nullptr) {};
 	~CVertexShader() {
-		SafeRelease(&_vertexShader);
+		SafeRelease(_vertexShader);
 	};
 
 	void Create(const FWString& path, const FString& name, const FString& version) override;
@@ -40,7 +40,7 @@ class CPixelShader : public CShader {
 public:
 	CPixelShader(ID3D11Device* device) : Super(device), _pixelShader(nullptr) {};
 	~CPixelShader() {
-		SafeRelease(&_pixelShader);
+		SafeRelease(_pixelShader);
 	};
 
 	void Create(const FWString& path, const FString& name, const FString& version) override;

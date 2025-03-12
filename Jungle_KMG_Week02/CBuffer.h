@@ -5,7 +5,7 @@ class CBuffer {
 public:
 	CBuffer(ID3D11Device* device) : _device(device) {};
 	virtual ~CBuffer() {
-		SafeRelease(&_buffer);
+		SafeRelease(_buffer);
 	};
 
 	ID3D11Buffer* Get() { return _buffer; }

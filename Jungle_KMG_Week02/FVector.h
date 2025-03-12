@@ -9,11 +9,12 @@ struct FVector {
 	static const FVector One;
 	static const FVector Zero;
 	FVector(float _x = 0, float _y = 0, float _z = 0) : x(_x), y(_y), z(_z) {}
+	FVector(float* arr) : x(arr[0]), y(arr[1]), z(arr[2]) {};
 	FVector operator*(float scalar) const {
 		return FVector(x * scalar, y * scalar, z * scalar);
 	}
-	FVector operator*(const FVector& rhs) const {
-		return FVector(x * rhs.x, y * rhs.y, z * rhs.z);
+	float operator*(const FVector& rhs) const {
+		return x * rhs.x + y * rhs.y + z * rhs.z;
 	}
 	FVector operator-(const FVector& rhs) const {
 		return FVector(x - rhs.x, y - rhs.y, z - rhs.z);
@@ -108,12 +109,13 @@ struct FVector {
 struct FVector4 {
 	float x, y, z, w;
 	FVector4(float _x = 0, float _y = 0, float _z = 0, float _w = 0) : x(_x), y(_y), z(_z), w(_w) {}
-	FVector4(FVector vec, float _w) : x(vec.x), y(vec.y), z(vec.z), w(_w) {} // Add
+	FVector4(float* arr) : x(arr[0]), y(arr[1]), z(arr[2]), w(arr[3]) {};
+	FVector4(FVector vec, float _w) : x(vec.x), y(vec.y), z(vec.z), w(_w) {}
 	FVector4 operator*(float scalar) const {
 		return FVector4(x * scalar, y * scalar, z * scalar, w * scalar);
 	}
-	FVector4 operator*(const FVector4& rhs) const {
-		return FVector4(x * rhs.x, y * rhs.y, z * rhs.z, w * rhs.w);
+	float operator*(const FVector4& rhs) const {
+		return x * rhs.x + y * rhs.y + z * rhs.z + w * rhs.w;
 	}
 	FVector4 operator-(const FVector4& rhs) const {
 		return FVector4(x - rhs.x, y - rhs.y, z - rhs.z, w - rhs.w);
@@ -125,9 +127,7 @@ struct FVector4 {
 
 		if (scalar == 0) {
 #ifdef _DEBUG
-			OutputDebugString(L"-------------------\ndivided Zero!\n-------------------");
-			assert(0);
-			return FVector4();
+			assert(0);	// Divided by zero
 #endif // DEBUG
 			return FVector4();
 		}
@@ -165,7 +165,6 @@ struct FVector4 {
 		{
 		case 0:
 			return x;
-			break;
 		case 1:
 			return y;
 		case 2:

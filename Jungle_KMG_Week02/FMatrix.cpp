@@ -72,10 +72,10 @@ FMatrix FMatrix::operator*(const float& rhs) const {
 
 FMatrix FMatrix::operator*(const FMatrix& rhs) const {
 	return FMatrix({
-		r1().Dot(rhs.c1()), r1().Dot(rhs.c2()), r1().Dot(rhs.c3()), r1().Dot(rhs.c4()),
-		r2().Dot(rhs.c1()), r2().Dot(rhs.c2()), r2().Dot(rhs.c3()), r2().Dot(rhs.c4()),
-		r3().Dot(rhs.c1()), r3().Dot(rhs.c2()), r3().Dot(rhs.c3()), r3().Dot(rhs.c4()),
-		r4().Dot(rhs.c1()), r4().Dot(rhs.c2()), r4().Dot(rhs.c3()), r4().Dot(rhs.c4()),
+		r1()*rhs.c1(), r1()*rhs.c2(), r1()*rhs.c3(), r1()*rhs.c4(),
+		r2()*rhs.c1(), r2()*rhs.c2(), r2()*rhs.c3(), r2()*rhs.c4(),
+		r3()*rhs.c1(), r3()*rhs.c2(), r3()*rhs.c3(), r3()*rhs.c4(),
+		r4()*rhs.c1(), r4()*rhs.c2(), r4()*rhs.c3(), r4()*rhs.c4(),
 	});
 }
 
@@ -111,10 +111,8 @@ bool FMatrix::operator!=(const FMatrix& other) const
 //}
 
 FVector4 operator*(const FVector4& lhs, const FMatrix& rhs) {
-	return FVector4(lhs.Dot(rhs.c1()), lhs.Dot(rhs.c2()), lhs.Dot(rhs.c3()), lhs.Dot(rhs.c4()));
-}
-
-;
+	return FVector4(lhs*rhs.c1(), lhs*rhs.c2(), lhs*rhs.c3(), lhs*rhs.c4());
+};
 
 FVector4 FMatrix::r1() const { return FVector4(m[0][0], m[0][1], m[0][2], m[0][3]); }
 
@@ -153,11 +151,10 @@ FMatrix FMatrix::Inverse() const
 			while (swapRow < 4 && fabs(A.m[swapRow][i]) < FLT_EPSILON) swapRow++;
 			if (swapRow == 4)
 			{
-				UE_LOG(L"�������?�������� �ʽ��ϴ�.");
 				return FMatrix::Identity; // �����?����
 			}
-			A = A.Swap(i, swapRow);
-			inv = inv.Swap(i, swapRow);
+			A = A.SwapRow(i, swapRow);
+			inv = inv.SwapRow(i, swapRow);
 		}
 
 		// �ǹ��� 1�� �����?
@@ -211,13 +208,30 @@ std::string FMatrix::to_string() const
 	return str;
 }
 
-FMatrix FMatrix::Scale(float sx, float sy, float sz) {
+FMatrix FMatrix::MakeFrom(const FVector& u, const FVector& v, const FVector& w, const FVector& p = FVector::Zero) {
+#ifdef _COL_MAJOR_SYSTEM
 	return FMatrix({
-		sx, 0.f, 0.f, 0.f,
-		0.f, sy, 0.f, 0.f,
-		0.f, 0.f, sz, 0.f,
+		u.x, u.y, u.z, p.x,
+		v.x, v.y, v.z, p.y,
+		w.x, w.y, w.z, p.z,
 		0.f, 0.f, 0.f, 1.f
-	});
+		});
+#else
+	return FMatrix({
+		u.x, v.x, w.x, 0.f,
+		u.y, v.y, w.y, 0.f,
+		u.z, v.z, w.z, 0.f,
+		p.x, p.y, p.z , 1.f
+		});
+#endif
+}
+
+FMatrix FMatrix::Scale(float sx, float sy, float sz) {
+	return MakeFrom(
+		FVector(sx, 0, 0), 
+		FVector(0, sy, 0), 
+		FVector(0, 0, sz)
+	);
 }
 
 FMatrix FMatrix::Scale(FVector xyz)
@@ -226,29 +240,26 @@ FMatrix FMatrix::Scale(FVector xyz)
 }
 
 FMatrix FMatrix::RotateX(float rx) {
-	return FMatrix({
-		1.f, 0.f, 0.f, 0.f,
-		0.f, cos(rx), -sin(rx), 0.f,
-		0.f, sin(rx), cos(rx), 0.f,
-		0.f, 0.f, 0.f, 1.f
-	});
+	return MakeFrom(
+		FVector(0.f, 0.f, 0.f),
+		FVector(0.f, cosf(rx), -sinf(rx)),
+		FVector(0.f, sinf(rx), cosf(rx))
+	);
 }
 FMatrix FMatrix::RotateY(float ry) {
-	return FMatrix({
-		cos(ry), 0.f, sin(ry), 0.f,
-		0.f, 1.f, 0.f, 0.f,
-		-sin(ry), 0.f, cos(ry), 0.f,
-		0.f, 0.f, 0.f, 1.f,
-	});
+	return MakeFrom(
+		FVector(cosf(ry), 0.f, sinf(ry)),
+		FVector(0.f, 0.f, 0.f),
+		FVector(-sinf(ry), 0.f, cosf(ry))
+	);
 }
 
 FMatrix FMatrix::RotateZ(float rz) {
-	return FMatrix({
-		cos(rz), -sin(rz), 0.f, 0.f,
-		sin(rz), cos(rz), 0.f, 0.f,
-		0.f, 0.f, 1.f, 0.f,
-		0.f, 0.f, 0.f, 1.f,
-	});
+	return MakeFrom(
+		FVector(cosf(rz), -sinf(rz), 0.f),
+		FVector(sinf(rz), cosf(rz), 0.f),
+		FVector(0.f, 0.f, 0.f)
+	);
 }
 
 FMatrix FMatrix::RotateXYZ(FVector xyz)
@@ -262,12 +273,12 @@ FMatrix FMatrix::RotateXYZ(FVector xyz)
 }
 
 FMatrix FMatrix::Translate(float tx, float ty, float tz) {
-	return FMatrix({
-		1.f, 0.f, 0.f, 0.f,
-		0.f, 1.f, 0.f, 0.f,
-		0.f, 0.f, 1.f, 0.f,
-		tx, ty, tz, 1.f
-	});
+	return MakeFrom(
+		FVector(1.f, 0.f, 0.f),
+		FVector(0.f, 1.f, 0.f),
+		FVector(0.f, 0.f, 1.f),
+		FVector(tx, ty, tz)
+	);
 }
 
 FMatrix FMatrix::Translate(FVector xyz)
@@ -275,46 +286,7 @@ FMatrix FMatrix::Translate(FVector xyz)
 	return Translate(xyz.x, xyz.y, xyz.z);
 }
 
-FMatrix FMatrix::MakeFromX(FVector xaxis) {
-	const FVector newX = xaxis.Normalized();
-	const FVector up = abs(xaxis.z) < 1.f ? FVector::Up : FVector::Right;
-	const FVector newY = (up ^ newX).Normalized();
-	const FVector newZ = newX ^ newY;
-	return FMatrix({
-		newX.x, newX.y, newX.z, 0.0f,
-		newY.x, newY.y, newY.z, 0.0f,
-		newZ.x, newZ.y, newZ.z, 0.0f,
-		0.0f, 0.0f, 0.0f, 0.0f,
-	});
-}
-
-FMatrix FMatrix::MakeFromY(FVector yaxis) {
-	const FVector newY = yaxis.Normalized();
-	const FVector up = abs(yaxis.z) < 1.f ? FVector::Up : FVector::Right;
-	const FVector newZ = (up ^ newY).Normalized();
-	const FVector newX = newY ^ newZ;
-	return FMatrix({
-		newX.x, newX.y, newX.z, 0.0f,
-		newY.x, newY.y, newY.z, 0.0f,
-		newZ.x, newZ.y, newZ.z, 0.0f,
-		0.0f, 0.0f, 0.0f, 0.0f,
-	});
-}
-
-FMatrix FMatrix::MakeFromZ(FVector zaxis) {
-	const FVector newZ = zaxis.Normalized();
-	const FVector up = abs(zaxis.z) < 1.f ? FVector::Up : FVector::Right;
-	const FVector newX = (up ^ newZ).Normalized();
-	const FVector newY = newZ ^ newX;
-	return FMatrix({
-		newX.x, newX.y, newX.z, 0.0f,
-		newY.x, newY.y, newY.z, 0.0f,
-		newZ.x, newZ.y, newZ.z, 0.0f,
-		0.0f, 0.0f, 0.0f, 0.0f,
-	});
-}
-
-FMatrix FMatrix::Swap(UINT r1, UINT r2)
+FMatrix FMatrix::SwapRow(UINT r1, UINT r2)
 {
 	if (r1 > 3 || r2 > 3) return FMatrix::Identity;
 

@@ -29,7 +29,7 @@ void CGraphics::RenderEnd() {
 }
 
 void CGraphics::Release() {
-	SafeRelease(&depthStencilView);
+	SafeRelease(depthStencilView);
 	ReleaseRenderTargetView();
 	ReleaseDeviceAndSwapChain();
 	
@@ -40,9 +40,9 @@ void CGraphics::ResizeBuffers(int width, int height)
 	if (_device && _deviceContext)
 	{
 		// ���� ���� ��� ����
-		if (_renderTargetView) { SafeRelease(&_renderTargetView); _renderTargetView = nullptr; }
-		if (depthStencilView) { SafeRelease(&depthStencilView); depthStencilView = nullptr; }
-		if (_backBuffer) { SafeRelease(&_backBuffer); _backBuffer = nullptr; }
+		if (_renderTargetView) { SafeRelease(_renderTargetView); _renderTargetView = nullptr; }
+		if (depthStencilView) { SafeRelease(depthStencilView); depthStencilView = nullptr; }
+		if (_backBuffer) { SafeRelease(_backBuffer); _backBuffer = nullptr; }
 
 		_width = width;
 		_height = height;
@@ -127,10 +127,10 @@ void CGraphics::CreateDeviceAndSwapChain() {
 void CGraphics::ReleaseDeviceAndSwapChain() {
 	if ( _deviceContext )
 		_deviceContext->Flush();
-	SafeRelease(&_renderTargetView);
-	SafeRelease(&_swapChain);
-	SafeRelease(&_deviceContext);
-	SafeRelease(&_device);
+	SafeRelease(_renderTargetView);
+	SafeRelease(_swapChain);
+	SafeRelease(_deviceContext);
+	SafeRelease(_device);
 }
 
 void CGraphics::CreateRenderTargetView() {
@@ -148,8 +148,8 @@ void CGraphics::CreateRenderTargetView() {
 }
 
 void CGraphics::ReleaseRenderTargetView() {
-	SafeRelease(&_backBuffer);
-	SafeRelease(&_renderTargetView);
+	SafeRelease(_backBuffer);
+	SafeRelease(_renderTargetView);
 }
 
 void CGraphics::CreateDepthStencilBuffer()

@@ -13,7 +13,7 @@ class CSamplerState : public CState {
 public:
 	CSamplerState(ID3D11Device* device) : Super(device), _samplerState(nullptr) {};
 	~CSamplerState() { 
-		SafeRelease(&_samplerState);
+		SafeRelease(_samplerState);
 	};
 	ID3D11SamplerState* Get() { return _samplerState; }
 
@@ -32,7 +32,7 @@ class CRasterzierState : public CState {
 public:
 	CRasterzierState(ID3D11Device* device) : Super(device), _rasterizerState(nullptr) {};
 	~CRasterzierState() {
-		SafeRelease(&_rasterizerState);
+		SafeRelease(_rasterizerState);
 	};
 	ID3D11RasterizerState* Get() { return _rasterizerState; }
 
@@ -46,7 +46,7 @@ class CBlendState : public CState {
 public:
 	CBlendState(ID3D11Device* device) : Super(device), _blendState(nullptr) {};
 	~CBlendState() {
-		SafeRelease(&_blendState);
+		SafeRelease(_blendState);
 	}
 	ID3D11BlendState* Get() { return _blendState; }
 
