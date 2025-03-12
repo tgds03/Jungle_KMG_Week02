@@ -6,6 +6,6 @@
 class UPrimitiveComponent : public USceneComponent {
 public:
 	UPrimitiveComponent() {};
-	virtual void Render() abstract;
+	//virtual void Render() abstract;
 };
 

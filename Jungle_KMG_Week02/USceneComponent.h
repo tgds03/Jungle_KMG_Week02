@@ -16,6 +16,9 @@ public:
 	inline FVector GetRelativeScale() noexcept;
 
 	FMatrix Transformation() const;
+	FVector Right();
+	FVector Up();
+	FVector Front();
 };
 
 inline void USceneComponent::SetRelativeLocation(FVector pos) noexcept {

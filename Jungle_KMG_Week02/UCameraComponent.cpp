@@ -1,7 +1,42 @@
 #include "stdafx.h"
 #include "UCameraComponent.h"
+#include "Input.h"
+#include "Time.h"
 
-void UCameraComponent::Update() {}
+void UCameraComponent::Update() {
+	const float speed = 2.0f;
+	auto loc = GetRelativeLocation();
+	FVector movement = FVector::Zero;
+	if ( Input::Instance().IsKeyDown(DIK_A) ) {
+		movement -= Right();
+	}
+	if ( Input::Instance().IsKeyDown(DIK_D) ) {
+		movement += Right();
+	}
+	if ( Input::Instance().IsKeyDown(DIK_W) ) {
+		movement += Front();
+	}
+	if ( Input::Instance().IsKeyDown(DIK_S) ) {
+		movement -= Front();
+	}
+	if ( Input::Instance().IsKeyDown(DIK_E) ) {
+		movement += Up();
+	}
+	if ( Input::Instance().IsKeyDown(DIK_Q) ) {
+		movement -= Up();
+	}
+	SetRelativeLocation(loc + movement * Time::GetDeltaTime() * speed);
+	if ( Input::Instance().IsMouseButtonDown(1) ) {
+		int dx, dy;
+		Input::Instance().GetMouseDelta(dx, dy);
+		auto rot = GetRelativeRotation();
+		SetRelativeRotation(rot - FVector(degToRad(dy) * mouseSensitive, degToRad(dx) * mouseSensitive, 0));
+
+		//RelativeRotation.y -= degToRad(dx) * mouseSensitive;
+		//RelativeRotation.x -= degToRad(dy) * mouseSensitive;
+	}
+
+}
 
 FMatrix UCameraComponent::Projection() {
 	if ( orthogonal )

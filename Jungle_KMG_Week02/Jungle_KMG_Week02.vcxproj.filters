@@ -90,6 +90,12 @@
     <ClInclude Include="UCameraComponent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>소스 파일\engine\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>소스 파일\engine\Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -148,6 +154,12 @@
     </ClCompile>
     <ClCompile Include="UCameraComponent.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>소스 파일\engine\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>소스 파일\engine\Framework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

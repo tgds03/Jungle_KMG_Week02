@@ -31,7 +31,9 @@ UCubeComponent::UCubeComponent() {
 	}
 }
 
-void UCubeComponent::Update() {}
+void UCubeComponent::Update() {
+	
+}
 
 void UCubeComponent::Render() {
 	CRenderer::SetMesh("Cube");

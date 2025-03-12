@@ -241,7 +241,7 @@ FMatrix FMatrix::Scale(FVector xyz)
 
 FMatrix FMatrix::RotateX(float rx) {
 	return MakeFrom(
-		FVector(0.f, 0.f, 0.f),
+		FVector(1.f, 0.f, 0.f),
 		FVector(0.f, cosf(rx), -sinf(rx)),
 		FVector(0.f, sinf(rx), cosf(rx))
 	);
@@ -249,7 +249,7 @@ FMatrix FMatrix::RotateX(float rx) {
 FMatrix FMatrix::RotateY(float ry) {
 	return MakeFrom(
 		FVector(cosf(ry), 0.f, sinf(ry)),
-		FVector(0.f, 0.f, 0.f),
+		FVector(0.f, 1.f, 0.f),
 		FVector(-sinf(ry), 0.f, cosf(ry))
 	);
 }
@@ -258,7 +258,7 @@ FMatrix FMatrix::RotateZ(float rz) {
 	return MakeFrom(
 		FVector(cosf(rz), -sinf(rz), 0.f),
 		FVector(sinf(rz), cosf(rz), 0.f),
-		FVector(0.f, 0.f, 0.f)
+		FVector(0.f, 0.f, 1.f)
 	);
 }
 

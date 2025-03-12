@@ -139,8 +139,10 @@
     <ClInclude Include="CState.h" />
     <ClInclude Include="FMatrix.h" />
     <ClInclude Include="FVector.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="ISingleton.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="TName.h" />
     <ClInclude Include="UActorComponent.h" />
     <ClInclude Include="UCameraComponent.h" />
@@ -161,7 +163,9 @@
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="FMatrix.cpp" />
     <ClCompile Include="FVector.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="TName.cpp" />
     <ClCompile Include="UActorComponent.cpp" />
     <ClCompile Include="UCameraComponent.cpp" />
