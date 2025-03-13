@@ -1,9 +1,11 @@
 #pragma once
 #include "USceneComponent.h"
 #include "CMesh.h"
+#include "TName.h"
 class ULineComponent :public USceneComponent {
 private:
 	FVector start, end;
+	TName name;
 public:
 	
 	void SetStartVector(FVector s);

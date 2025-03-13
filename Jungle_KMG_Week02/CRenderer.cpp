@@ -67,27 +67,29 @@ void CRenderer::AddPixelShader(FString name, FWString path, FString entrypoint) 
 }
 
 void CRenderer::SetMesh(FString name) {
-    TName tname = TName(name);
-    if ( _instance->_meshes[name] ) {
-        if ( _instance->_nowMesh == tname )
-            return;
-        _instance->_nowMesh = tname;
+    SetMesh(TName(name));
+}
 
-        CMesh<FVertexColor>* mesh = _instance->_meshes[tname];
+void CRenderer::SetMesh(TName name) {
+    if ( _instance->_meshes[name] ) {
+        if ( _instance->_nowMesh == name )
+            return;
+        _instance->_nowMesh = name;
+
+        CMesh<FVertexColor>* mesh = _instance->_meshes[name];
         ID3D11DeviceContext* ctx = _instance->GetGraphics()->GetDeviceContext();
         uint32 stride = mesh->GetVerticesStride();
         uint32 offset = mesh->GetVerticesOffset();
         ID3D11Buffer* vertices = mesh->GetVerticesBuffer();
-        
+
         ctx->IASetVertexBuffers(0, 1, &vertices, &stride, &offset);
 
         ID3D11Buffer* indices = mesh->GetIndicesBuffer();
         ctx->IASetIndexBuffer(indices, DXGI_FORMAT_R32_UINT, 0);
 
         ctx->IASetPrimitiveTopology(mesh->GetPrimitiveMode());
-        
-    }
-    else {
+
+    } else {
         OutputDebugString(L"Try to access none resource (SetMesh)");
         _instance->_nowMesh = TName("");
     }
@@ -142,18 +144,18 @@ void CRenderer::Render() {
 
 void CRenderer::SetTansformToConstantBuffer(FMatrix matrix) {
     
-#ifdef _COL_MAJOR_SYSTEM
+#ifdef _ROW_MAJOR_SYSTEM
     FMatrix view = _instance->_mainCamera->Transformation().Inverse();
     //FMatrix view = _instance->_mainCamera->View();
     FMatrix projection = _instance->_mainCamera->Projection();
-    matrix = view * matrix;
-    matrix = projection * matrix;
+    matrix = projection * view * matrix;
+    //matrix = projection * matrix;
 #else
     FMatrix view = _instance->_mainCamera->Transformation().Inverse();
     //FMatrix view = _instance->_mainCamera->View();
     FMatrix projection = _instance->_mainCamera->Projection();
-    matrix = matrix * view;
-    matrix = matrix * projection;
+    matrix = matrix * view * projection;
+    //matrix = matrix * projection;
 #endif
     _instance->_constantBuffer->CopyData(matrix);
     ID3D11Buffer* constantBuffer = _instance->_constantBuffer->Get();

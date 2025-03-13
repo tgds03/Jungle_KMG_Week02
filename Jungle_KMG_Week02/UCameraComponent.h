@@ -13,6 +13,13 @@ public:
 	FMatrix OrthgonalProjection();
 	FMatrix PerspectiveProjection();
 
+	void CreateRayObject(int mouse_x, int mouse_y);
+private:
+	FVector4 ClickPositionToView(int mouse_x, int mouse_y);
+	FVector4 NDCNearPositionToView(FVector4 vec);
+	FVector4 NDCFarPositionToView(FVector4 vec);
+	FVector4 ViewPositionToWorld(FVector4 vec);
+public:
 	// USceneComponent을(를) 통해 상속됨
 	void Start() override;
 	void Render() override;

@@ -110,13 +110,15 @@ bool FMatrix::operator!=(const FMatrix& other) const
 //	return FVector4(rhs.Dot(c1()), rhs.Dot(c2()), rhs.Dot(c3()), rhs.Dot(c4()));
 //}
 
+#ifdef _ROW_MAJOR_SYSTEM
 FVector4 operator*(const FVector4& lhs, const FMatrix& rhs) {
-#ifdef _COL_MAJOR_SYSTEM
-	return FVector4(lhs * rhs.r1(), lhs * rhs.r2(), lhs * rhs.r3(), lhs * rhs.r4());
+	return FVector4(lhs * rhs.c1(), lhs * rhs.c2(), lhs * rhs.c3(), lhs * rhs.c4());
+}
 #else
-	return FVector4(lhs*rhs.c1(), lhs*rhs.c2(), lhs*rhs.c3(), lhs*rhs.c4());
+FVector4 operator*(const FMatrix& lhs, const FVector4& rhs) {
+	return FVector4(rhs * lhs.r1(), rhs * lhs.r2(), rhs * lhs.r3(), rhs * lhs.r4());
+}
 #endif
-};
 
 FVector4 FMatrix::r1() const { return FVector4(m[0][0], m[0][1], m[0][2], m[0][3]); }
 
@@ -213,7 +215,7 @@ std::string FMatrix::to_string() const
 }
 
 FMatrix FMatrix::MakeFrom(const FVector& u, const FVector& v, const FVector& w, const FVector& p = FVector::Zero) {
-#ifdef _COL_MAJOR_SYSTEM
+#ifdef _ROW_MAJOR_SYSTEM
 	return FMatrix({
 		u.x, u.y, u.z, p.x,
 		v.x, v.y, v.z, p.y,
@@ -269,7 +271,7 @@ FMatrix FMatrix::RotateZ(float rz) {
 FMatrix FMatrix::RotateXYZ(FVector xyz)
 {
 	FMatrix mat = FMatrix::Identity;
-#ifdef _COL_MAJOR_SYSTEM
+#ifdef _ROW_MAJOR_SYSTEM
 	mat = mat.RotateX(xyz.x) * mat;
 	mat = mat.RotateY(xyz.y) * mat;
 	mat = mat.RotateZ(xyz.z) * mat;
@@ -277,7 +279,7 @@ FMatrix FMatrix::RotateXYZ(FVector xyz)
 	mat = mat * mat.RotateX(xyz.x);
 	mat = mat * mat.RotateY(xyz.y);
 	mat = mat * mat.RotateZ(xyz.z);
-#endif // _COL_MAJOR_SYSTEM
+#endif // _ROW_MAJOR_SYSTEM
 
 	
 	

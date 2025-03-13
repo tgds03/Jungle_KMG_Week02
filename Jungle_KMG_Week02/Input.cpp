@@ -199,17 +199,20 @@ void Input::GetMouseRay(FVector& rayOrigin, FVector& rayDirection,
 
 	FVector4 nearPoint = FVector4(ndcX, ndcY, 0.f, 1.f);
 	FVector4 farPoint = FVector4(ndcX, ndcY, 1.f, 1.f);
-	//ImGui::Begin("GetMouseRay");
-	//ImGui::Text("nearPoint : %f %f %f \nfarPoint : %f %f %f", nearPoint.x, nearPoint.y, nearPoint.z, farPoint.x, farPoint.y, farPoint.z);
-	//ImGui::End();
+	
+#ifdef _ROW_MAJOR_SYSTEM
 	FMatrix invProj = projectionMatrix.Inverse();
-
-	nearPoint = nearPoint * invProj;
-	farPoint = farPoint * invProj;
-
 	FMatrix invView = viewMatrix.Inverse();
-	nearPoint = nearPoint * invView;
-	farPoint = farPoint * invView;
+
+	nearPoint = nearPoint * invProj * invView;
+	farPoint = farPoint * invProj * invView;
+#else
+	FMatrix invProj = projectionMatrix.Inverse();
+	FMatrix invView = viewMatrix.Inverse();
+
+	nearPoint = invView * invProj * nearPoint;
+	farPoint = invView * invProj * farPoint;
+#endif
 
 	rayOrigin = nearPoint.xyz() / nearPoint.w;
 

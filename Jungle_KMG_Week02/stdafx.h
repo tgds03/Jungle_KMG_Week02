@@ -28,11 +28,12 @@ using uint32 = unsigned int;
 using FString = std::string;
 using FWString = std::wstring;
 
+#define _ROW_MAJOR_SYSTEM
+
 #include "FVector.h"
 #include "FMatrix.h"
 #define M_PI           3.14159265358979323846
 
-//#define _COL_MAJOR_SYSTEM
 //#define SCR_WIDTH 1200
 //#define SCR_HEIGHT 800
 

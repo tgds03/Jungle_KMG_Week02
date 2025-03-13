@@ -1,6 +1,6 @@
 cbuffer TransformBuffer : register(b0)
 {
-    row_major matrix WorldMatrix;
+    matrix WorldMatrix;
 };
 
 struct VS_INPUT

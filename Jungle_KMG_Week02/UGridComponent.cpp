@@ -22,6 +22,7 @@ UGridComponent::UGridComponent() {
 
 void UGridComponent::Render() {
 	CRenderer::SetMesh("WorldGrid");
+	CRenderer::SetTansformToConstantBuffer(Transformation());
 	CRenderer::Render();
 }
 

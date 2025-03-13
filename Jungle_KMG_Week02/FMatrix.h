@@ -42,12 +42,20 @@ public:
 
 	FMatrix Transpose() const;
 	FMatrix Inverse() const;
+#ifdef _ROW_MAJOR_SYSTEM
 	friend FVector4 operator*(const FVector4& lhs, const FMatrix& rhs);
+#else
+	friend FVector4 operator*(const FMatrix& lhs, const FVector4& rhs);
+#endif
 	std::wstring to_wstring() const;
 	std::string to_string() const;
 
 	inline FVector TransformCoord(FVector4 vec) {
+#ifdef _ROW_MAJOR_SYSTEM
 		FVector4 v = (vec * (*this));
+#else
+		FVector4 v = ((*this) * vec);
+#endif
 		return FVector(v.x / v.w, v.y / v.w, v.z / v.w);
 	}
 	inline FVector TransformCoord(const FVector& v) {

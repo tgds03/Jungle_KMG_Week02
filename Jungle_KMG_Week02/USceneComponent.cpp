@@ -2,7 +2,7 @@
 #include "USceneComponent.h"
 
 FMatrix USceneComponent::Transformation() const {
-#ifdef _COL_MAJOR_SYSTEM
+#ifdef _ROW_MAJOR_SYSTEM
 	FMatrix m = FMatrix::Scale(RelativeScale3D);
 	m = FMatrix::RotateXYZ(RelativeRotation) * m;
 	m = FMatrix::Translate(RelativeLocation) * m;
@@ -16,7 +16,7 @@ FMatrix USceneComponent::Transformation() const {
 }
 
 FVector USceneComponent::Right() {
-#ifdef _COL_MAJOR_SYSTEM
+#ifdef _ROW_MAJOR_SYSTEM
 	FVector4 r = Transformation().c1(); // (1,0,0,0) * getcomponenttransform
 #else
 	FVector4 r = Transformation().r1(); // (1,0,0,0) * getcomponenttransform
@@ -25,7 +25,7 @@ FVector USceneComponent::Right() {
 }
 
 FVector USceneComponent::Up() {
-#ifdef _COL_MAJOR_SYSTEM
+#ifdef _ROW_MAJOR_SYSTEM
 	FVector4 r = Transformation().c2();
 #else
 	FVector4 r = Transformation().r2();
@@ -34,7 +34,7 @@ FVector USceneComponent::Up() {
 }
 
 FVector USceneComponent::Front() {
-#ifdef _COL_MAJOR_SYSTEM
+#ifdef _ROW_MAJOR_SYSTEM
 	FVector4 r = Transformation().c3();
 #else
 	FVector4 r = Transformation().r3();

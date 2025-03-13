@@ -48,9 +48,12 @@ public:
 	static CGraphics* GetGraphics();
 	template<typename T>
 	static void AddMesh(FString, CMesh<T>*);
+	template<typename T>
+	static void AddMesh(TName, CMesh<T>*);
 	static void AddVertexShader(FString name, FWString path, FString entrypoint);
 	static void AddPixelShader(FString name, FWString path, FString entrypoint);
 	static void SetMesh(FString name);
+	static void SetMesh(TName name);
 	static void SetVertexShader(FString name);
 	static void SetPixelShader(FString name);
 	static void SetMainCamera(UCameraComponent* camera);
@@ -61,4 +64,9 @@ public:
 template<typename T>
 inline void CRenderer::AddMesh(FString s, CMesh<T>* m) {
 	_instance->_meshes[TName(s)] = m;
+}
+
+template<typename T>
+inline void CRenderer::AddMesh(TName s, CMesh<T>* m) {
+	_instance->_meshes[s] = m;
 }
