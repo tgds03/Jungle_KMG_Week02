@@ -83,6 +83,8 @@ void CRenderer::SetMesh(FString name) {
 
         ID3D11Buffer* indices = mesh->GetIndicesBuffer();
         ctx->IASetIndexBuffer(indices, DXGI_FORMAT_R32_UINT, 0);
+
+        ctx->IASetPrimitiveTopology(mesh->GetPrimitiveMode());
         
     }
     else {

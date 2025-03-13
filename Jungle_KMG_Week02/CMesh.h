@@ -5,18 +5,23 @@
 
 template <typename T>
 class CMesh {
-	TArray<T> vertices;
-	TArray<uint32> indices;
+	TArray<T> _vertices;
+	TArray<uint32> _indices;
 
-	CVertexBuffer<T>* vertexBuffer;
-	CIndexBuffer* indexBuffer;
+	CVertexBuffer<T>* _vertexBuffer;
+	CIndexBuffer* _indexBuffer;
 
+protected:
+	D3D11_PRIMITIVE_TOPOLOGY _primitiveMode;
+	inline CMesh(D3D11_PRIMITIVE_TOPOLOGY primitiveMode) : _primitiveMode(primitiveMode) {};
 public:
-	CMesh(){};
-	~CMesh();
+	inline CMesh(): _primitiveMode(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST) {};
+	virtual ~CMesh();
 
 	CMesh<T>* SetVertices(const std::initializer_list<T>& list);
 	CMesh<T>* SetIndices(const std::initializer_list<uint32>& list);
+	CMesh<T>* SetVertices(const TArray<T>& list);
+	CMesh<T>* SetIndices(const TArray<uint32>& list);
 	void Reset();
 
 
@@ -26,6 +31,7 @@ public:
 	uint32 GetVerticesOffset();
 	ID3D11Buffer* GetIndicesBuffer();
 	uint32 GetIndicesCount();
+	D3D11_PRIMITIVE_TOPOLOGY GetPrimitiveMode();
 	inline bool IsEmpty();
 };
 
@@ -36,59 +42,102 @@ inline CMesh<T>::~CMesh() {
 
 template<typename T>
 inline CMesh<T>* CMesh<T>::SetVertices(const std::initializer_list<T>& list) {
-	vertices = TArray<T>(list);
-	vertexBuffer = new CVertexBuffer<T>(CRenderer::GetGraphics()->GetDevice());
-	vertexBuffer->Create(vertices);
+	_vertices = TArray<T>(list);
+	if ( _vertexBuffer )
+		SafeDelete(_vertexBuffer);
+	_vertexBuffer = new CVertexBuffer<T>(CRenderer::GetGraphics()->GetDevice());
+	_vertexBuffer->Create(_vertices);
 	return this;
 }
 
 template<typename T>
 inline CMesh<T>* CMesh<T>::SetIndices(const std::initializer_list<uint32>& list) {
-	indices = TArray<uint32>(list);
-	indexBuffer = new CIndexBuffer(CRenderer::GetGraphics()->GetDevice());
-	indexBuffer->Create(indices);
+	_indices = TArray<uint32>(list);
+	if ( _indexBuffer )
+		SafeDelete(_indexBuffer);
+	_indexBuffer = new CIndexBuffer(CRenderer::GetGraphics()->GetDevice());
+	_indexBuffer->Create(_indices);
+	return this;
+}
+
+template<typename T>
+inline CMesh<T>* CMesh<T>::SetVertices(const TArray<T>& list) {
+	_vertices.clear();
+	_vertices = list;
+	if ( _vertexBuffer )
+		SafeDelete(_vertexBuffer);
+	_vertexBuffer = new CVertexBuffer<T>(CRenderer::GetGraphics()->GetDevice());
+	_vertexBuffer->Create(_vertices);
+	return this;
+}
+
+template<typename T>
+inline CMesh<T>* CMesh<T>::SetIndices(const TArray<uint32>& list) {
+	_indices.clear();
+	_indices = list;
+	if ( _indexBuffer )
+		SafeDelete(_indexBuffer);
+	_indexBuffer = new CIndexBuffer(CRenderer::GetGraphics()->GetDevice());
+	_indexBuffer->Create(_indices);
 	return this;
 }
 
 template<typename T>
 inline void CMesh<T>::Reset() {
-	vertices.clear();
-	indices.clear();
-	delete vertexBuffer;
-	delete indexBuffer;
+	_vertices.clear();
+	_indices.clear();
+	delete _vertexBuffer;
+	delete _indexBuffer;
 }
 
 template<typename T>
 inline ID3D11Buffer* CMesh<T>::GetVerticesBuffer() {
-	return vertexBuffer->Get();
+	return _vertexBuffer->Get();
 }
 
 template<typename T>
 inline uint32 CMesh<T>::GetVerticesCount() {
-	return vertexBuffer->GetCount();
+	return _vertexBuffer->GetCount();
 }
 
 template<typename T>
 inline uint32 CMesh<T>::GetVerticesStride() {
-	return vertexBuffer->GetStride();
+	return _vertexBuffer->GetStride();
 }
 
 template<typename T>
 inline uint32 CMesh<T>::GetVerticesOffset() {
-	return vertexBuffer->GetOffset();
+	return _vertexBuffer->GetOffset();
 }
 
 template<typename T>
 inline ID3D11Buffer* CMesh<T>::GetIndicesBuffer() {
-	return indexBuffer->Get();
+	return _indexBuffer->Get();
 }
 
 template<typename T>
 inline uint32 CMesh<T>::GetIndicesCount() {
-	return indexBuffer->GetCount();
+	return _indexBuffer->GetCount();
+}
+
+template<typename T>
+inline D3D11_PRIMITIVE_TOPOLOGY CMesh<T>::GetPrimitiveMode() {
+	return _primitiveMode;
 }
 
 template<typename T>
 inline bool CMesh<T>::IsEmpty() {
-	return vertices.empty() || indices.empty();
+	return _vertices.empty() || _indices.empty();
 }
+
+class CBatchLineMesh: public CMesh<FVertexColor> {
+	TArray<TPair<FVertexColor, FVertexColor>> _lines;
+public:
+	CBatchLineMesh(): CMesh(D3D11_PRIMITIVE_TOPOLOGY_LINELIST) {};
+	~CBatchLineMesh() {};
+
+	void AddLine(TPair<FVertexColor, FVertexColor> pair);
+	void AddLine(FVertexColor p1, FVertexColor p2);
+	void Clear();
+	void Set();
+};

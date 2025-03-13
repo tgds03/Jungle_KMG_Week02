@@ -4,8 +4,14 @@ class UWorld: public UObject {
 	TArray<AActor*> _actors;
 
 public:
-	void Update();
-	void Render();
+	virtual void Update();
+	virtual void Render();
 	void AddActor(AActor*);
 };
 
+class UTestWorld: public UWorld {
+public:
+	UTestWorld();
+	void Update();
+	void Render();
+};

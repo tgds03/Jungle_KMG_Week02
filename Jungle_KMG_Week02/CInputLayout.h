@@ -16,13 +16,17 @@ private:
 };
 
 struct FVertexColor {
-	float x, y, z, w;
+	float x, y, z;
 	float r, g, b, a;
+	FVertexColor(float x, float y, float z, float r, float g, float b, float a) :
+		x(x), y(y), z(z), r(r), g(g), b(b), a(a) {};
 	static TArray<D3D11_INPUT_ELEMENT_DESC> descs;
 };
 
 struct FVertexTexture {
 	float x, y, z, w;
 	float u, v;
+	FVertexTexture(float x, float y, float z, float u, float v) :
+		x(x), y(y), z(z), u(u), v(v) {};
 	static TArray<D3D11_INPUT_ELEMENT_DESC> descs;
 };

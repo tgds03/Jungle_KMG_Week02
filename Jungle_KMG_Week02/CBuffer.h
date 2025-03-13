@@ -32,13 +32,13 @@ public:
 	CVertexBuffer(ID3D11Device* device) : Super(device) {};
 	~CVertexBuffer() {};
 
-	void Create(const std::vector<T>& vertices) override;
+	void Create(const std::vector<T>& _vertices) override;
 };
 
 template <typename T>
-inline void CVertexBuffer<T>::Create(const std::vector<T>& vertices) {
+inline void CVertexBuffer<T>::Create(const std::vector<T>& _vertices) {
 	this->_stride = sizeof(T);
-	this->_count = static_cast<UINT32>(vertices.size());
+	this->_count = static_cast<UINT32>(_vertices.size());
 
 	D3D11_BUFFER_DESC desc = {};
 	desc.Usage = D3D11_USAGE_IMMUTABLE;			// immutable: gpu�� �б� �������� ������ �� �ִ�.
@@ -46,7 +46,7 @@ inline void CVertexBuffer<T>::Create(const std::vector<T>& vertices) {
 	desc.ByteWidth = (UINT32)(this->_stride * this->_count);	// buffer ũ�� ����
 
 	D3D11_SUBRESOURCE_DATA data = {};
-	data.pSysMem = vertices.data();
+	data.pSysMem = _vertices.data();
 
 	HRESULT hr = this->_device->CreateBuffer(&desc, &data, &this->_buffer);
 	assert(SUCCEEDED(hr));
@@ -58,13 +58,13 @@ public:
 	using Super = CBuffer<UINT32>;
 	CIndexBuffer(ID3D11Device* device) : Super(device) {};
 	~CIndexBuffer() {};
-	void Create(const std::vector<UINT32>& indices) override;
+	void Create(const std::vector<UINT32>& _indices) override;
 };
 
-inline void CIndexBuffer::Create(const std::vector<UINT32>& indices) {
+inline void CIndexBuffer::Create(const std::vector<UINT32>& _indices) {
 	this->_stride = sizeof(UINT32);
 	this->_offset = 0;
-	this->_count = static_cast<UINT32>(indices.size());
+	this->_count = static_cast<UINT32>(_indices.size());
 
 	D3D11_BUFFER_DESC desc = {};						// buffer�� ����, �뵵 ���� ����
 	desc.Usage = D3D11_USAGE_IMMUTABLE;			// immutable: gpu�� �б� �������� ������ �� �ִ�.
@@ -72,7 +72,7 @@ inline void CIndexBuffer::Create(const std::vector<UINT32>& indices) {
 	desc.ByteWidth = (UINT32)(sizeof(UINT32) * this->_count);	// buffer ũ�� ����
 
 	D3D11_SUBRESOURCE_DATA data = {};
-	data.pSysMem = indices.data();
+	data.pSysMem = _indices.data();
 
 	HRESULT hr = this->_device->CreateBuffer(&desc, &data, &this->_buffer);
 }

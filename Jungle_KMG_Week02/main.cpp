@@ -2,8 +2,6 @@
 #include "CRenderer.h"
 #include "CGraphics.h"
 #include "UWorld.h"
-#include "UCameraComponent.h"
-#include "UCubeComponent.h"
 #include "Input.h"
 #include "Time.h"
 int SCR_WIDTH = 800;
@@ -43,27 +41,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	CRenderer::SetVertexShader("VertexShader");
 	CRenderer::SetPixelShader("PixelShader");
 
-	UCubeComponent* comp1 = new UCubeComponent();
-	comp1->SetRelativeLocation(FVector(5, 0, 0));
-
-	UCubeComponent* comp2 = new UCubeComponent();
-	comp2->SetRelativeLocation(FVector(0, 5, 0));
-
-	UCubeComponent* comp3 = new UCubeComponent();
-	comp3->SetRelativeLocation(FVector(0, 0, 5));
-
-	UCameraComponent* cam = new UCameraComponent();
-	cam->SetRelativeLocation(FVector(0, 0, 0));
-	CRenderer::SetMainCamera(cam);
-
-	AActor* actor = new AActor();
-	actor->RegisterComponent(comp1);
-	actor->RegisterComponent(comp2);
-	actor->RegisterComponent(comp3);
-	actor->RegisterComponent(cam);
-
-	UWorld* world = new UWorld();
-	world->AddActor(actor);
+	UWorld* world = new UTestWorld();
 
 	MSG msg = {};
 	
