@@ -57,3 +57,29 @@ void CBlendState::Create() {
 	HRESULT hr = _device->CreateBlendState(&_desc, &_blendState);
 	assert(SUCCEEDED(hr));
 }
+
+void CDepthStencilState::Create() {
+	D3D11_DEPTH_STENCIL_DESC desc;
+	desc.DepthEnable = TRUE;                        // 깊이 테스트 활성화
+	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL; // 깊이 버퍼 쓰기 활성화
+	desc.DepthFunc = D3D11_COMPARISON_LESS;         // 작은 값이 가까움
+
+	desc.StencilEnable = FALSE;                    // 스텐실 기능 비활성화
+	desc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+	desc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+
+	// 프론트 페이스(기본적으로 CW) 스텐실 설정
+	desc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	desc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	desc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	desc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	// 백 페이스(CCW) 스텐실 설정
+	desc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	desc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	desc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	desc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	HRESULT hr = _device->CreateDepthStencilState(&desc, &_depthStencilState);
+	assert(SUCCEEDED(hr));
+}

@@ -58,3 +58,17 @@ private:
 	ID3D11BlendState* _blendState;
 	D3D11_BLEND_DESC _desc = {};
 };
+
+class CDepthStencilState: public CState {
+	using Super = CState;
+public:
+	CDepthStencilState(ID3D11Device* device) : Super(device), _depthStencilState(nullptr) {};
+	~CDepthStencilState() {
+		SafeRelease(_depthStencilState);
+	}
+	ID3D11DepthStencilState* Get() { return _depthStencilState; }
+
+	void Create();
+private:
+	ID3D11DepthStencilState* _depthStencilState;
+};

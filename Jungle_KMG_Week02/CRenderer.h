@@ -12,6 +12,7 @@ class CPixelShader;
 class CIndexBuffer;
 class CGraphics;
 class CRasterizerState;
+class CDepthStencilState;
 template <typename T> class CConstantBuffer;
 
 class CRenderer: public ISingleton<CRenderer> {
@@ -32,6 +33,8 @@ private:
 	CRasterizerState* _states = nullptr;
 	CInputLayout* _inputLayout = nullptr;
 	CConstantBuffer<FMatrix>* _constantBuffer = nullptr;
+	CDepthStencilState* _depthStencilState = nullptr;
+	
 
 	TName _nowMesh;
 	TName _nowVertexShader;

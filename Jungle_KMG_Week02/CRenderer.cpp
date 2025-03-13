@@ -12,17 +12,41 @@ CRenderer::CRenderer() {}
 void CRenderer::Init(HWND hWnd) {
     _instance = new CRenderer();
     _instance->_graphics = new CGraphics(hWnd);
+
     _instance->_inputLayout = new CInputLayout(_instance->_graphics->GetDevice());
+
     _instance->_states = new CRasterizerState(_instance->_graphics->GetDevice());
     _instance->_states->Create();
     _instance->_graphics->GetDeviceContext()->RSSetState(_instance->_states->Get());
+
+    _instance->_depthStencilState = new CDepthStencilState(_instance->_graphics->GetDevice());
+    _instance->_depthStencilState->Create();
+    _instance->_graphics->GetDeviceContext()->OMSetDepthStencilState(_instance->_depthStencilState->Get(), 1);
+
     _instance->_constantBuffer = new CConstantBuffer<FMatrix>(_instance->_graphics->GetDevice(), _instance->_graphics->GetDeviceContext());
     _instance->_constantBuffer->Create();
     _instance->_graphics->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    
 }
 
 void CRenderer::Release() {
+    for (auto& it : _instance->_meshes) {
+        delete it.second;
+    }
+    for (auto& it : _instance->_pixelShader) {
+        delete it.second;
+    }
+    for (auto& it : _instance->_vertexShader) {
+        delete it.second;
+    }
+
+    _instance->_meshes.clear();
+    _instance->_pixelShader.clear();
+    _instance->_vertexShader.clear();
+
+    delete _instance->_states;
+    delete _instance->_depthStencilState;
+    delete _instance->_constantBuffer;
+    delete _instance->_inputLayout;
     delete _instance->_graphics;
 }
 

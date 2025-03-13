@@ -63,7 +63,7 @@ FMatrix UCameraComponent::OrthgonalProjection() {
 		0.f, 0.f, 1.f / zRange, -nearDistance / zRange,
 		0.f, 0.f, 0.f, 1.f
 	});
-#endif
+#endif //_COL_MAJOR_SYSTEM
 }
 
 FMatrix UCameraComponent::PerspectiveProjection() {
@@ -84,7 +84,7 @@ FMatrix UCameraComponent::PerspectiveProjection() {
 		 0.0f,    0.0f,   farDistance / zRange,                1.0f ,
 		 0.0f,    0.0f,  -nearDistance * farDistance / zRange,        0.0f
 	});
-#endif
+#endif //_COL_MAJOR_SYSTEM
 }
 
 void UCameraComponent::Start() {}
