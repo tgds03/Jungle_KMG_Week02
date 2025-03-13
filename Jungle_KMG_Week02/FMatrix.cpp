@@ -112,11 +112,11 @@ bool FMatrix::operator!=(const FMatrix& other) const
 
 #ifdef _ROW_MAJOR_SYSTEM
 FVector4 operator*(const FVector4& lhs, const FMatrix& rhs) {
-	return FVector4(lhs * rhs.c1(), lhs * rhs.c2(), lhs * rhs.c3(), lhs * rhs.c4());
+	return FVector4(lhs * rhs.r1(), lhs * rhs.r2(), lhs * rhs.r3(), lhs * rhs.r4());
 }
 #else
 FVector4 operator*(const FMatrix& lhs, const FVector4& rhs) {
-	return FVector4(rhs * lhs.r1(), rhs * lhs.r2(), rhs * lhs.r3(), rhs * lhs.r4());
+	return FVector4(rhs * lhs.c1(), rhs * lhs.c2(), rhs * lhs.c3(), rhs * lhs.c4());
 }
 #endif
 

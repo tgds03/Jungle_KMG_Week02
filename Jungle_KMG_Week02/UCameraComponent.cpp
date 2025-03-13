@@ -48,19 +48,17 @@ void UCameraComponent::CreateRayObject(int mouse_x, int mouse_y) {
 	FMatrix invProj = proj.Inverse();
 	
 	FMatrix invViewMatrix = Transformation();
-	FVector4 pickStartPosition = FVector4(0.f, 0.f, 0.f, 1.f);
-	FVector4 pickEndPosition = FVector4(0.f, 0.f, 0.f, 1.f);
+	FVector4 pickNearPosition = FVector4(0.f, 0.f, 0.f, 1.f);
+	FVector pickDirection;
 
-	//pickStartPosition = ClickPositionToViewNear(mouse_x, mouse_y);
-	pickStartPosition = ViewPositionToWorld(pickStartPosition);
+	pickNearPosition = ClickPositionToView(mouse_x, mouse_y);
+	pickNearPosition = ViewPositionToWorld(pickNearPosition);
+	pickDirection = pickNearPosition.xyz() - GetRelativeLocation();
 	//pickStartPosition = pickStartPosition / pickStartPosition.w;
 
-	/*pickEndPosition = ClickPositionToViewFar(mouse_x, mouse_y);
-	pickEndPosition = ViewPositionToWorld(pickEndPosition);*/
-
 	auto linecomp = new ULineComponent();
-	linecomp->SetStartVector(FVector(pickStartPosition.x, pickStartPosition.y, pickStartPosition.z));
-	linecomp->SetEndVector(FVector(pickEndPosition.x, pickEndPosition.y, pickEndPosition.z));
+	linecomp->SetStartVector(FVector(pickNearPosition.x, pickNearPosition.y, pickNearPosition.z));
+	linecomp->SetEndVector(pickNearPosition.xyz() + pickDirection * 50);
 	linecomp->SetMesh();
 
 	AActor* line = new AActor();
@@ -68,13 +66,13 @@ void UCameraComponent::CreateRayObject(int mouse_x, int mouse_y) {
 	AddActor(line);
 }
 
-FVector4 UCameraComponent::ClickPositionToViewNear(int mouse_x, int mouse_y) {
+FVector4 UCameraComponent::ClickPositionToView(int mouse_x, int mouse_y) {
 	FVector4 pos;
 	FMatrix proj = Projection();
 	D3D11_VIEWPORT viewport = CRenderer::GetGraphics()->GetViewport();
 	pos.x = ((2.0f * mouse_x / viewport.Width) - 1) / proj[0][0];
 	pos.y = -((2.0f * mouse_y / viewport.Height) - 1) / proj[1][1];
-	pos.z = 0.0f;
+	pos.z = 1.0f;
 	pos.w = 1.0f;
 	return pos;
 }
@@ -85,14 +83,14 @@ FVector4 UCameraComponent::ClickPositionToViewFar(int mouse_x, int mouse_y) {
 	D3D11_VIEWPORT viewport = CRenderer::GetGraphics()->GetViewport();
 	pos.x = ((2.0f * mouse_x / viewport.Width) - 1) / proj[0][0];
 	pos.y = -((2.0f * mouse_y / viewport.Height) - 1) / proj[1][1];
-	pos.z = 1.0f;
-	pos.w = 0.0f;
+	pos.z = 50.0f;
+	pos.w = 1.0f;
 	return pos;
 }
 
 FVector4 UCameraComponent::ViewPositionToWorld(FVector4 vec) {
 #ifdef _ROW_MAJOR_SYSTEM
-	return vec * Transformation().Inverse();
+	return vec * Transformation();
 #else
 	return Transformation().Inverse() * vec;
 #endif // _ROW_MAJOR_SYSTEM

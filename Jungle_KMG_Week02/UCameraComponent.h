@@ -15,7 +15,7 @@ public:
 
 	void CreateRayObject(int mouse_x, int mouse_y);
 private:
-	FVector4 ClickPositionToViewNear(int mouse_x, int mouse_y);
+	FVector4 ClickPositionToView(int mouse_x, int mouse_y);
 	FVector4 ClickPositionToViewFar(int mouse_x, int mouse_y);
 	FVector4 ViewPositionToWorld(FVector4 vec);
 public:
