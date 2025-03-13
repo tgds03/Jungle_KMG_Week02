@@ -115,11 +115,20 @@ void CRenderer::Render() {
 }
 
 void CRenderer::SetTansformToConstantBuffer(FMatrix matrix) {
+    
+#ifdef _COL_MAJOR_SYSTEM
+    FMatrix view = _instance->_mainCamera->Transformation().Inverse();
+    //FMatrix view = _instance->_mainCamera->View();
+    FMatrix projection = _instance->_mainCamera->Projection();
+    matrix = view * matrix;
+    matrix = projection * matrix;
+#else
     FMatrix view = _instance->_mainCamera->Transformation().Inverse();
     //FMatrix view = _instance->_mainCamera->View();
     FMatrix projection = _instance->_mainCamera->Projection();
     matrix = matrix * view;
     matrix = matrix * projection;
+#endif
     _instance->_constantBuffer->CopyData(matrix);
     ID3D11Buffer* constantBuffer = _instance->_constantBuffer->Get();
     _instance->_graphics->GetDeviceContext()->VSSetConstantBuffers(0, 1, &constantBuffer);

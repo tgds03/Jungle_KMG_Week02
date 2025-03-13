@@ -269,9 +269,17 @@ FMatrix FMatrix::RotateZ(float rz) {
 FMatrix FMatrix::RotateXYZ(FVector xyz)
 {
 	FMatrix mat = FMatrix::Identity;
+#ifdef _COL_MAJOR_SYSTEM
+	mat = mat.RotateX(xyz.x) * mat;
+	mat = mat.RotateY(xyz.y) * mat;
+	mat = mat.RotateZ(xyz.z) * mat;
+#else
 	mat = mat * mat.RotateX(xyz.x);
 	mat = mat * mat.RotateY(xyz.y);
 	mat = mat * mat.RotateZ(xyz.z);
+#endif // _COL_MAJOR_SYSTEM
+
+	
 	
 	return mat;
 }

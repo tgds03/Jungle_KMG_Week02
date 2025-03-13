@@ -74,7 +74,7 @@ FMatrix UCameraComponent::PerspectiveProjection() {
 	return FMatrix({
 		 xScale,  0.0f,   0.0f,                         0.0f,
 		 0.0f,    yScale, 0.0f,                         0.0f,
-		 0.0f,    0.0f,   farDistance / zRange,         -nearDistance * farDistance / zRange,
+		 0.0f,    0.0f,   farDistance / zRange,         - nearDistance * farDistance / zRange,
 		 0.0f,    0.0f,  1.0f,							0.0f
 	});
 #else

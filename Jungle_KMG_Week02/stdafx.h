@@ -31,7 +31,7 @@ using FWString = std::wstring;
 #include "FMatrix.h"
 #define M_PI           3.14159265358979323846
 
-//#define _COL_MAJOR_SYSTEM
+#define _COL_MAJOR_SYSTEM
 //#define SCR_WIDTH 1200
 //#define SCR_HEIGHT 800
 
@@ -52,8 +52,8 @@ template <typename T> inline void SafeDelete(T*& ppT) {
 	}
 }
 
-inline float degToRad(float deg) { return deg * M_PI / 180.f; }
-inline float radToDeg(float rad) { return rad * 180.f / M_PI; }
+inline double degToRad(double deg) { return deg * M_PI / 180.f; }
+inline double radToDeg(double rad) { return rad * 180.f / M_PI; }
 
 //template <typename T> inline void SafeDelete(T** ppT) {
 //	if ( *ppT ) {
