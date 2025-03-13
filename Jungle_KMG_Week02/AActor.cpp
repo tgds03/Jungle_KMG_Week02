@@ -1,8 +1,14 @@
 #include "stdafx.h"
 #include "AActor.h"
+#include "UWorld.h"
 
 void AActor::RegisterComponent(UActorComponent* comp) {
 	_components.push_back(comp);
+	comp->_owner = this;
+}
+
+void AActor::AddActor(AActor* actor) {
+	_owner->AddActor(actor);
 }
 
 void AActor::Start() {

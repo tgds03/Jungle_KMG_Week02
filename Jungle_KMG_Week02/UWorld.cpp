@@ -5,19 +5,22 @@
 #include "UGridComponent.h"
 
 void UWorld::Update() {
-	for(auto& actor: _actors) {
-		actor->Update();
+	//for(auto& actor: _actors) {
+	for (int i = 0; i < _actors.size(); i++) {
+		_actors[i]->Update();
 	}
 }
 
 void UWorld::Render() {
-	for ( auto& actor : _actors ) {
-		actor->Render();
+	/*for ( auto& actor : _actors ) {*/
+	for ( int i = 0; i < _actors.size(); i++ ) {
+		_actors[i]->Render();
 	}
 }
 
 void UWorld::AddActor(AActor* actor) {
 	_actors.push_back(actor);
+	actor->_owner = this;
 }
 
 UTestWorld::UTestWorld() {

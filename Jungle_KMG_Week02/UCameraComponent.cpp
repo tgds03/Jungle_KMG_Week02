@@ -2,6 +2,8 @@
 #include "UCameraComponent.h"
 #include "Input.h"
 #include "Time.h"
+#include "AActor.h"
+#include "ULineComponent.h"
 
 void UCameraComponent::Update() {
 	const float speed = 2.0f;
@@ -31,9 +33,19 @@ void UCameraComponent::Update() {
 		Input::Instance().GetMouseDelta(dx, dy);
 		auto rot = GetRelativeRotation();
 		SetRelativeRotation(rot + FVector(degToRad(dy) * mouseSensitive, degToRad(dx) * mouseSensitive, 0));
+	}
+	if ( Input::Instance().IsMouseButtonReleased(0) ) {
+		int x, y;
+		Input::Instance().GetMouseLocation(x, y);
+		
+		auto linecomp = new ULineComponent();
+		linecomp->SetStartVector(FVector(1, 1, 1));
+		linecomp->SetEndVector(FVector(1, 2, 1));
+		linecomp->SetMesh();
 
-		//RelativeRotation.y -= degToRad(dx) * mouseSensitive;
-		//RelativeRotation.x -= degToRad(dy) * mouseSensitive;
+		AActor* line = new AActor();
+		line->RegisterComponent(linecomp);
+		AddActor(line);
 	}
 
 }

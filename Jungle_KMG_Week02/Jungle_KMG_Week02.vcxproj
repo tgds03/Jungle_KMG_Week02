@@ -148,6 +148,7 @@
     <ClInclude Include="UCameraComponent.h" />
     <ClInclude Include="UCubeComponent.h" />
     <ClInclude Include="UGridComponent.h" />
+    <ClInclude Include="ULineComponent.h" />
     <ClInclude Include="UObject.h" />
     <ClInclude Include="UPrimitiveComponent.h" />
     <ClInclude Include="USceneComponent.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="UCameraComponent.cpp" />
     <ClCompile Include="UCubeComponent.cpp" />
     <ClCompile Include="UGridComponent.cpp" />
+    <ClCompile Include="ULineComponent.cpp" />
     <ClCompile Include="UObject.cpp" />
     <ClCompile Include="UPrimitiveComponent.cpp" />
     <ClCompile Include="USceneComponent.cpp" />
