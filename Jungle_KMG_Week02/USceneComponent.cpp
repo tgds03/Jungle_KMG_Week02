@@ -11,7 +11,6 @@ FMatrix USceneComponent::Transformation() const {
     m = m * FMatrix::RotateXYZ(RelativeRotation);
     m = m * FMatrix::Translate(RelativeLocation);
 #endif
-	
     return m;
 }
 

@@ -214,7 +214,7 @@ std::string FMatrix::to_string() const
 	return str;
 }
 
-FMatrix FMatrix::MakeFrom(const FVector& u, const FVector& v, const FVector& w, const FVector& p = FVector::Zero) {
+FMatrix FMatrix::BasisTransform(const FVector& u, const FVector& v, const FVector& w, const FVector& p = FVector::Zero) {
 #ifdef _ROW_MAJOR_SYSTEM
 	return FMatrix({
 		u.x, u.y, u.z, p.x,
@@ -227,13 +227,13 @@ FMatrix FMatrix::MakeFrom(const FVector& u, const FVector& v, const FVector& w, 
 		u.x, v.x, w.x, 0.f,
 		u.y, v.y, w.y, 0.f,
 		u.z, v.z, w.z, 0.f,
-		p.x, p.y, p.z , 1.f
+		p.x, p.y, p.z, 1.f
 	});
 #endif
 }
 
 FMatrix FMatrix::Scale(float sx, float sy, float sz) {
-	return MakeFrom(
+	return BasisTransform(
 		FVector(sx, 0, 0), 
 		FVector(0, sy, 0), 
 		FVector(0, 0, sz)
@@ -246,14 +246,14 @@ FMatrix FMatrix::Scale(FVector xyz)
 }
 
 FMatrix FMatrix::RotateX(float rx) {
-	return MakeFrom(
+	return BasisTransform(
 		FVector(1.f, 0.f, 0.f),
 		FVector(0.f, cosf(rx), -sinf(rx)),
 		FVector(0.f, sinf(rx), cosf(rx))
 	);
 }
 FMatrix FMatrix::RotateY(float ry) {
-	return MakeFrom(
+	return BasisTransform(
 		FVector(cosf(ry), 0.f, sinf(ry)),
 		FVector(0.f, 1.f, 0.f),
 		FVector(-sinf(ry), 0.f, cosf(ry))
@@ -261,7 +261,7 @@ FMatrix FMatrix::RotateY(float ry) {
 }
 
 FMatrix FMatrix::RotateZ(float rz) {
-	return MakeFrom(
+	return BasisTransform(
 		FVector(cosf(rz), -sinf(rz), 0.f),
 		FVector(sinf(rz), cosf(rz), 0.f),
 		FVector(0.f, 0.f, 1.f)
@@ -280,14 +280,11 @@ FMatrix FMatrix::RotateXYZ(FVector xyz)
 	mat = mat * mat.RotateY(xyz.y);
 	mat = mat * mat.RotateZ(xyz.z);
 #endif // _ROW_MAJOR_SYSTEM
-
-	
-	
 	return mat;
 }
 
 FMatrix FMatrix::Translate(float tx, float ty, float tz) {
-	return MakeFrom(
+	return BasisTransform(
 		FVector(1.f, 0.f, 0.f),
 		FVector(0.f, 1.f, 0.f),
 		FVector(0.f, 0.f, 1.f),

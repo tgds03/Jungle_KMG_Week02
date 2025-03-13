@@ -75,10 +75,7 @@ public:
 	static FMatrix RotateXYZ(FVector xyz);
 	static FMatrix Translate(float tx, float ty, float tz);
 	static FMatrix Translate(FVector xyz);
-	static FMatrix MakeFrom(const FVector& u, const FVector& v, const FVector& w, const FVector& p);
-	static FMatrix MakeFromX(const FVector& xaxis);
-	static FMatrix MakeFromY(const FVector& yaxis);
-	static FMatrix MakeFromZ(const FVector& zaxis);
+	static FMatrix BasisTransform(const FVector& u, const FVector& v, const FVector& w, const FVector& p);
 	FMatrix SwapRow(UINT r1, UINT r2);
 };
 

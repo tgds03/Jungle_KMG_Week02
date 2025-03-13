@@ -32,7 +32,7 @@ UCubeComponent::UCubeComponent() {
 }
 
 void UCubeComponent::Update() {
-	
+	SetRelativeRotation(FVector(M_PI / 4, 0, 0));
 }
 
 void UCubeComponent::Render() {

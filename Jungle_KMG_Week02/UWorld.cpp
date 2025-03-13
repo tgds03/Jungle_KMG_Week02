@@ -34,7 +34,7 @@ UTestWorld::UTestWorld() {
 	comp3->SetRelativeLocation(FVector(0, 0, 5));*/
 
 	UCameraComponent* cam = new UCameraComponent();
-	cam->SetRelativeLocation(FVector(0, 0, -5));
+	cam->SetRelativeLocation(FVector(0, 0, 0));
 	CRenderer::SetMainCamera(cam);
 
 	AActor* actor = new AActor();

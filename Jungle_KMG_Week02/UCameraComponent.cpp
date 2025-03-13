@@ -43,29 +43,20 @@ void UCameraComponent::Update() {
 
 }
 
-FMatrix UCameraComponent::Projection() {
-	if ( orthogonal )
-		return OrthgonalProjection();
-	else
-		return PerspectiveProjection();
-}
-
 void UCameraComponent::CreateRayObject(int mouse_x, int mouse_y) {
 	FMatrix proj = Projection();
 	FMatrix invProj = proj.Inverse();
 	
 	FMatrix invViewMatrix = Transformation();
-	FVector4 pickStartPosition;
-	FVector4 pickEndPosition = FVector4();
+	FVector4 pickStartPosition = FVector4(0.f, 0.f, 0.f, 1.f);
+	FVector4 pickEndPosition = FVector4(0.f, 0.f, 0.f, 1.f);
 
-	pickStartPosition = ClickPositionToView(mouse_x, mouse_y);
-	pickStartPosition = NDCNearPositionToView(pickStartPosition);
+	//pickStartPosition = ClickPositionToViewNear(mouse_x, mouse_y);
 	pickStartPosition = ViewPositionToWorld(pickStartPosition);
 	//pickStartPosition = pickStartPosition / pickStartPosition.w;
 
-	//pickEndPosition = ClickPositionToView(mouse_x, mouse_y);
-	//pickEndPosition = NDCFarPositionToView(pickEndPosition);
-	//pickEndPosition = ViewPositionToWorld(pickEndPosition);
+	/*pickEndPosition = ClickPositionToViewFar(mouse_x, mouse_y);
+	pickEndPosition = ViewPositionToWorld(pickEndPosition);*/
 
 	auto linecomp = new ULineComponent();
 	linecomp->SetStartVector(FVector(pickStartPosition.x, pickStartPosition.y, pickStartPosition.z));
@@ -77,43 +68,25 @@ void UCameraComponent::CreateRayObject(int mouse_x, int mouse_y) {
 	AddActor(line);
 }
 
-// screen coord to ndc coord
-FVector4 UCameraComponent::ClickPositionToView(int mouse_x, int mouse_y) {
+FVector4 UCameraComponent::ClickPositionToViewNear(int mouse_x, int mouse_y) {
 	FVector4 pos;
 	FMatrix proj = Projection();
 	D3D11_VIEWPORT viewport = CRenderer::GetGraphics()->GetViewport();
 	pos.x = ((2.0f * mouse_x / viewport.Width) - 1) / proj[0][0];
 	pos.y = -((2.0f * mouse_y / viewport.Height) - 1) / proj[1][1];
-	//pos.z = 1.0f;
-	return pos;
-}
-
-FVector4 UCameraComponent::NDCNearPositionToView(FVector4 vec) {
-	FVector4 pos = vec;
 	pos.z = 0.0f;
-	pos.w = nearDistance;
-#ifdef _ROW_MAJOR_SYSTEM
-	pos = pos * Projection().Inverse();
-#else
-	pos = Projection().Inverse() * pos;
-#endif // _ROW_MAJOR_SYSTEM
-	
-	//pos = pos / pos.w;
-	//pos.w = -nearDistance * farDistance / ((farDistance - nearDistance) * 1.0f);
+	pos.w = 1.0f;
 	return pos;
 }
 
-FVector4 UCameraComponent::NDCFarPositionToView(FVector4 vec) {
-	FVector4 pos = vec;
+FVector4 UCameraComponent::ClickPositionToViewFar(int mouse_x, int mouse_y) {
+	FVector4 pos;
+	FMatrix proj = Projection();
+	D3D11_VIEWPORT viewport = CRenderer::GetGraphics()->GetViewport();
+	pos.x = ((2.0f * mouse_x / viewport.Width) - 1) / proj[0][0];
+	pos.y = -((2.0f * mouse_y / viewport.Height) - 1) / proj[1][1];
 	pos.z = 1.0f;
-	pos.w = farDistance;
-#ifdef _ROW_MAJOR_SYSTEM
-	pos = pos * Projection().Inverse();
-#else
-	pos = Projection().Inverse() * pos;
-#endif // _ROW_MAJOR_SYSTEM
-	//pos = pos / pos.w;
-	//pos.w = -nearDistance * farDistance / ((farDistance - nearDistance) * -1.0f);
+	pos.w = 0.0f;
 	return pos;
 }
 
@@ -123,6 +96,13 @@ FVector4 UCameraComponent::ViewPositionToWorld(FVector4 vec) {
 #else
 	return Transformation().Inverse() * vec;
 #endif // _ROW_MAJOR_SYSTEM
+}
+
+FMatrix UCameraComponent::Projection() {
+	if ( orthogonal )
+		return OrthgonalProjection();
+	else
+		return PerspectiveProjection();
 }
 
 FMatrix UCameraComponent::OrthgonalProjection() {
