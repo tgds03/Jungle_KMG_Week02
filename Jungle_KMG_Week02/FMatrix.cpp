@@ -112,11 +112,11 @@ bool FMatrix::operator!=(const FMatrix& other) const
 
 #ifdef _ROW_MAJOR_SYSTEM
 FVector4 operator*(const FVector4& lhs, const FMatrix& rhs) {
-	return FVector4(lhs * rhs.r1(), lhs * rhs.r2(), lhs * rhs.r3(), lhs * rhs.r4());
+	return FVector4(lhs * rhs.c1(), lhs * rhs.c2(), lhs * rhs.c3(), lhs * rhs.c4());
 }
 #else
 FVector4 operator*(const FMatrix& lhs, const FVector4& rhs) {
-	return FVector4(rhs * lhs.c1(), rhs * lhs.c2(), rhs * lhs.c3(), rhs * lhs.c4());
+	return FVector4(rhs * lhs.r1(), rhs * lhs.r2(), rhs * lhs.r3(), rhs * lhs.r4());
 }
 #endif
 
@@ -216,18 +216,24 @@ std::string FMatrix::to_string() const
 
 FMatrix FMatrix::BasisTransform(const FVector& u, const FVector& v, const FVector& w, const FVector& p = FVector::Zero) {
 #ifdef _ROW_MAJOR_SYSTEM
-	return FMatrix({
+	/*return FMatrix({
 		u.x, u.y, u.z, p.x,
 		v.x, v.y, v.z, p.y,
 		w.x, w.y, w.z, p.z,
 		0.f, 0.f, 0.f, 1.f
-	});
-#else
+	});*/
 	return FMatrix({
 		u.x, v.x, w.x, 0.f,
 		u.y, v.y, w.y, 0.f,
 		u.z, v.z, w.z, 0.f,
 		p.x, p.y, p.z, 1.f
+	});
+#else
+	return FMatrix({
+		u.x, u.y, u.z, p.x,
+		v.x, v.y, v.z, p.y,
+		w.x, w.y, w.z, p.z,
+		0.f, 0.f, 0.f, 1.f
 	});
 #endif
 }
@@ -272,13 +278,15 @@ FMatrix FMatrix::RotateXYZ(FVector xyz)
 {
 	FMatrix mat = FMatrix::Identity;
 #ifdef _ROW_MAJOR_SYSTEM
-	mat = mat.RotateX(xyz.x) * mat;
+	mat = mat * FMatrix::RotateX(xyz.x) * FMatrix::RotateY(xyz.y) * FMatrix::RotateZ(xyz.z);
+	/*mat = mat.RotateX(xyz.x) * mat;
 	mat = mat.RotateY(xyz.y) * mat;
-	mat = mat.RotateZ(xyz.z) * mat;
+	mat = mat.RotateZ(xyz.z) * mat;*/
 #else
-	mat = mat * mat.RotateX(xyz.x);
+	mat = FMatrix::RotateZ(xyz.z) * FMatrix::RotateY(xyz.y) * FMatrix::RotateX(xyz.x) * mat;
+	/*mat = mat * mat.RotateX(xyz.x);
 	mat = mat * mat.RotateY(xyz.y);
-	mat = mat * mat.RotateZ(xyz.z);
+	mat = mat * mat.RotateZ(xyz.z);*/
 #endif // _ROW_MAJOR_SYSTEM
 	return mat;
 }

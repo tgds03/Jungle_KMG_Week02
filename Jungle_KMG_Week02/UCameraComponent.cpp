@@ -92,7 +92,7 @@ FVector4 UCameraComponent::ViewPositionToWorld(FVector4 vec) {
 #ifdef _ROW_MAJOR_SYSTEM
 	return vec * Transformation();
 #else
-	return Transformation().Inverse() * vec;
+	return Transformation() * vec;
 #endif // _ROW_MAJOR_SYSTEM
 }
 
@@ -132,15 +132,15 @@ FMatrix UCameraComponent::PerspectiveProjection() {
 	return FMatrix({
 		 xScale,  0.0f,   0.0f,                         0.0f,
 		 0.0f,    yScale, 0.0f,                         0.0f,
-		 0.0f,    0.0f,   farDistance / zRange,         - nearDistance * farDistance / zRange,
-		 0.0f,    0.0f,  1.0f,							0.0f
+		 0.0f,    0.0f,  farDistance / zRange,         1.0f,
+		 0.0f,    0.0f,  -nearDistance * farDistance / zRange,	0.0f
 	});
 #else
 	return FMatrix({
 		 xScale,  0.0f,   0.0f,                         0.0f ,
 		 0.0f,    yScale, 0.0f,                         0.0f,
-		 0.0f,    0.0f,   farDistance / zRange,                -1.0f ,
-		 0.0f,    0.0f,  -nearDistance * farDistance / zRange,        0.0f
+		 0.0f,    0.0f,   farDistance / zRange,         -nearDistance * farDistance / zRange,
+		 0.0f,    0.0f,  1.0f,							0.0f
 	});
 #endif //_ROW_MAJOR_SYSTEM
 }
