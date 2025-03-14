@@ -3,6 +3,9 @@
 class UCubeComponent: public UPrimitiveComponent {
 public:
 	UCubeComponent();
+
+	virtual bool IsRayIntersect(Ray ray);
+
 	void Update() override;
 	void Render() override;
 

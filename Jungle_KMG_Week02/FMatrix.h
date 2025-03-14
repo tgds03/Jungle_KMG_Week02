@@ -58,9 +58,9 @@ public:
 #endif
 		return FVector(v.x / v.w, v.y / v.w, v.z / v.w);
 	}
+
 	inline FVector TransformCoord(const FVector& v) {
 		FVector4 v4 = FVector4(v, 1);
-		
 		return TransformCoord(v4);
 	}
 

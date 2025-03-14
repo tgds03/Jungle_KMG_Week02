@@ -29,11 +29,44 @@ UCubeComponent::UCubeComponent() {
 			});
 		CRenderer::AddMesh("Cube", _mesh);
 	}
+	aabb = BoundingBox();
+	aabb.min = FVector(-1.f, -1.f, -1.f);
+	aabb.max = FVector(1.f, 1.f, 1.f);
 }
 
-void UCubeComponent::Update() {
-	SetRelativeRotation(FVector(M_PI / 4, 0, 0));
+bool UCubeComponent::IsRayIntersect(Ray ray) {
+	FMatrix transformation = Transformation().Inverse();
+	Ray transformedRay = Ray(transformation.TransformCoord(ray.start), transformation.TransformCoord(ray.end));
+
+	// reference: https://gamedev.stackexchange.com/questions/18436/most-efficient-aabb-vs-ray-collision-algorithms
+	BoundingBox aabb = GetAABB();
+	FVector rayDirection = ray.GetDirection();
+	FVector dirfrac = FVector(1 / rayDirection.x, 1 / rayDirection.y, 1 / rayDirection.z);
+
+	float t1 = (aabb.min.x - transformedRay.start.x) * dirfrac.x;
+	float t2 = (aabb.max.x - transformedRay.start.x) * dirfrac.x;
+	float t3 = (aabb.min.y - transformedRay.start.y) * dirfrac.y;
+	float t4 = (aabb.max.y - transformedRay.start.y) * dirfrac.y;
+	float t5 = (aabb.min.z - transformedRay.start.z) * dirfrac.z;
+	float t6 = (aabb.max.z - transformedRay.start.z) * dirfrac.z;
+
+	float tmin = max(max(min(t1, t2), min(t3, t4)), min(t5, t6));
+	float tmax = min(min(max(t1, t2), max(t3, t4)), max(t5, t6));
+
+	// if tmax < 0, ray (line) is intersecting AABB, but the whole AABB is behind us
+	if ( tmax < 0 ) {
+		return false;
+	}
+
+	// if tmin > tmax, ray doesn't intersect AABB
+	if ( tmin > tmax ) {
+		return false;
+	}
+
+	return true;
 }
+
+void UCubeComponent::Update() {}
 
 void UCubeComponent::Render() {
 	CRenderer::SetMesh("Cube");

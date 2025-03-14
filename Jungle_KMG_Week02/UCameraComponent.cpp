@@ -4,6 +4,8 @@
 #include "Time.h"
 #include "AActor.h"
 #include "ULineComponent.h"
+#include "UWorld.h"
+#include "UPrimitiveComponent.h"
 
 void UCameraComponent::Update() {
 	const float speed = 2.0f;
@@ -34,31 +36,26 @@ void UCameraComponent::Update() {
 		auto rot = GetRelativeRotation();
 		SetRelativeRotation(rot + FVector(degToRad(dy) * mouseSensitive, degToRad(dx) * mouseSensitive, 0));
 	}
-	if ( Input::Instance().IsMouseButtonReleased(0) ) {
-		int x, y;
-		Input::Instance().GetMouseLocation(x, y);
-		
-		CreateRayObject(x, y);
-	}
-
 }
 
-void UCameraComponent::CreateRayObject(int mouse_x, int mouse_y) {
-	FMatrix proj = Projection();
-	FMatrix invProj = proj.Inverse();
-	
-	FMatrix invViewMatrix = Transformation();
+Ray UCameraComponent::CreateRay(int mouse_x, int mouse_y, float maxDistance = 100.f) {
 	FVector4 pickNearPosition = FVector4(0.f, 0.f, 0.f, 1.f);
 	FVector pickDirection;
 
 	pickNearPosition = ClickPositionToView(mouse_x, mouse_y);
 	pickNearPosition = ViewPositionToWorld(pickNearPosition);
 	pickDirection = pickNearPosition.xyz() - GetRelativeLocation();
-	//pickStartPosition = pickStartPosition / pickStartPosition.w;
+
+	return Ray(pickNearPosition.xyz(), pickNearPosition.xyz() + pickDirection * maxDistance);
+}
+
+void UCameraComponent::CreateRayObject(int mouse_x, int mouse_y) {
+	Ray ray = CreateRay(mouse_x, mouse_y);
+	UWorld* nowWorld = GetActor()->GetWorld();
 
 	auto linecomp = new ULineComponent();
-	linecomp->SetStartVector(FVector(pickNearPosition.x, pickNearPosition.y, pickNearPosition.z));
-	linecomp->SetEndVector(pickNearPosition.xyz() + pickDirection * 50);
+	linecomp->SetStartVector(ray.start);
+	linecomp->SetEndVector(ray.end);
 	linecomp->SetMesh();
 
 	AActor* line = new AActor();

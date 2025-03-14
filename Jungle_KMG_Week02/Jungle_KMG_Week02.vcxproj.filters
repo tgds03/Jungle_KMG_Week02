@@ -102,6 +102,9 @@
     <ClInclude Include="ULineComponent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>소스 파일\engine\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -172,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="ULineComponent.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Geomtery.cpp">
+      <Filter>소스 파일\engine\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -59,6 +59,8 @@ public:
 	static void SetMainCamera(UCameraComponent* camera);
 	static void Render();
 	static void SetTansformToConstantBuffer(FMatrix m);
+
+	inline static UCameraComponent* GetMainCamera() { return _instance->_mainCamera; }
 };
 
 template<typename T>

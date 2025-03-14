@@ -1,5 +1,7 @@
 #pragma once
 #include "USceneComponent.h"
+#include "Geometry.h"
+
 class UCameraComponent :public USceneComponent {
 public:
 	bool orthogonal = false;
@@ -13,6 +15,7 @@ public:
 	FMatrix OrthgonalProjection();
 	FMatrix PerspectiveProjection();
 
+	Ray CreateRay(int mouse_x, int mouse_y, float maxDistance);
 	void CreateRayObject(int mouse_x, int mouse_y);
 private:
 	FVector4 ClickPositionToView(int mouse_x, int mouse_y);

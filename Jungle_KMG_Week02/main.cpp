@@ -38,6 +38,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	CRenderer::Init(hWnd);
 	CRenderer::AddVertexShader("VertexShader", L"Shader.hlsl", "VS");
 	CRenderer::AddPixelShader("PixelShader", L"Shader.hlsl", "PS");
+	CRenderer::AddPixelShader("SelectedPixelShader", L"Shader.hlsl", "PSSelected");
 	CRenderer::SetVertexShader("VertexShader");
 	CRenderer::SetPixelShader("PixelShader");
 

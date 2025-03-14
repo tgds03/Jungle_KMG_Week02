@@ -104,6 +104,32 @@ struct FVector {
 		FVector unit = vec.Normalized();
 		return unit * unit.Dot(*this);
 	}
+	float Max() const {
+		if (x > y) {
+			if ( x >= z )
+				return x;
+			else if ( x < z )
+				return z;
+		} else {
+			if ( y >= z )
+				return y;
+			else
+				return z;
+		}
+	}
+	float Min() const {
+		if ( x < y ) {
+			if ( x <= z )
+				return x;
+			else if ( x > z )
+				return z;
+		} else {
+			if ( y <= z )
+				return y;
+			else
+				return z;
+		}
+	}
 };
 
 struct FVector4 {

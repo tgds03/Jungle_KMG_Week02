@@ -141,6 +141,7 @@
     <ClInclude Include="FVector.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="ISingleton.h" />
+    <ClInclude Include="Geometry.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="TName.h" />
@@ -167,6 +168,7 @@
     <ClCompile Include="FVector.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Geomtery.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="TName.cpp" />
     <ClCompile Include="UActorComponent.cpp" />

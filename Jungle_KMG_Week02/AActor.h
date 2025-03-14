@@ -14,7 +14,11 @@ public:
 	void Update();
 	void Render();
 	void Remove();
-
+	inline UWorld* GetWorld() { 
+		return _owner; 
+	}
+	inline TArray<UActorComponent*>::iterator ComponentBegin() { return _components.begin(); }
+	inline TArray<UActorComponent*>::iterator ComponentEnd() { return _components.end(); }
 	template <typename T>
 	T* GetComponent();
 };
